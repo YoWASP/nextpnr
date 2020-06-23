@@ -1,0 +1,7 @@
+/wasi-sdk-*
+*.wasm
+
+/boost_*
+/eigen-*
+/*-build
+/*-prefix
