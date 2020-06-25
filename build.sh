@@ -84,14 +84,3 @@ cmake -B nextpnr-build -S nextpnr-src \
 	-DARCH=ice40 \
 	-DICESTORM_INSTALL_PREFIX=$(pwd)/icestorm-prefix
 cmake --build nextpnr-build
-
-mkdir -p pypi/yowasp_nextpnr_ice40/bin/
-cp icestorm-prefix/bin/icepll.wasm \
-	icestorm-prefix/bin/icebram.wasm \
-	icestorm-prefix/bin/icemulti.wasm \
-	icestorm-prefix/bin/icepack.wasm \
-	nextpnr-build/nextpnr-ice40.wasm \
-	pypi/yowasp_nextpnr_ice40/bin/
-mkdir -p pypi/yowasp_nextpnr_ice40/share/ice40
-cp nextpnr-build/ice40/chipdb/*.bin \
-	pypi/yowasp_nextpnr_ice40/share/ice40
