@@ -33,8 +33,6 @@ END
 cmake -B eigen-build -S ${EIGEN} -DCMAKE_INSTALL_PREFIX=$(pwd)/eigen-prefix
 make -C eigen-build install
 
-# remove once https://github.com/cliffordwolf/icestorm/pull/260 gets merged
-sed -i 's/getpid()/0/' -i icestorm-src/icebram/icebram.cc
 make -C icestorm-src EXE=".wasm" \
 	CXX="ccache ${WASI_SDK_PATH}/bin/clang++" \
 	CXXFLAGS="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -fno-exceptions -flto" \
