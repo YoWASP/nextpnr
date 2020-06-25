@@ -1,6 +1,6 @@
 [submodule "icestorm"]
 	path = icestorm-src
-	url = https://github.com/cliffordwolf/icestorm
+	url = https://github.com/YosysHQ/icestorm
 [submodule "nextpnr"]
 	path = nextpnr-src
-	url = https://github.com/YosysHQ/nextpnr/
+	url = https://github.com/YosysHQ/nextpnr
