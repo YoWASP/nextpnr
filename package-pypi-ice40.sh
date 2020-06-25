@@ -2,19 +2,19 @@
 
 PYTHON=${PYTHON:-python}
 
-mkdir -p pypi/yowasp_nextpnr_ice40/bin/
+mkdir -p pypi-ice40/yowasp_nextpnr_ice40/bin/
 cp icestorm-prefix/bin/icepll.wasm \
-	icestorm-prefix/bin/icebram.wasm \
-	icestorm-prefix/bin/icemulti.wasm \
-	icestorm-prefix/bin/icepack.wasm \
-	nextpnr-build/nextpnr-ice40.wasm \
-	pypi/yowasp_nextpnr_ice40/bin/
-mkdir -p pypi/yowasp_nextpnr_ice40/share/ice40
+   icestorm-prefix/bin/icebram.wasm \
+   icestorm-prefix/bin/icemulti.wasm \
+   icestorm-prefix/bin/icepack.wasm \
+   nextpnr-build/nextpnr-ice40.wasm \
+   pypi-ice40/yowasp_nextpnr_ice40/bin/
+mkdir -p pypi-ice40/yowasp_nextpnr_ice40/share/ice40
 cp nextpnr-build/ice40/chipdb/*.bin \
-	pypi/yowasp_nextpnr_ice40/share/ice40
+   pypi-ice40/yowasp_nextpnr_ice40/share/ice40
 
-cd pypi
-${PYTHON} setup.py bdist_wheel
+cd pypi-ice40
+rm -rf build && ${PYTHON} setup.py bdist_wheel
 rm -rf build && DEVICE=384 ${PYTHON} setup.py bdist_wheel
 rm -rf build && DEVICE=1k ${PYTHON} setup.py bdist_wheel
 rm -rf build && DEVICE=5k ${PYTHON} setup.py bdist_wheel

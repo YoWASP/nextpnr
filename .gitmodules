@@ -4,3 +4,6 @@
 [submodule "nextpnr"]
 	path = nextpnr-src
 	url = https://github.com/YosysHQ/nextpnr
+[submodule "prjtrellis-src"]
+	path = prjtrellis-src
+	url = https://github.com/YosysHQ/prjtrellis

@@ -66,7 +66,7 @@ else:
 setup(
     author="whitequark",
     author_email="whitequark@whitequark.org",
-    description="nextpnr portable FPGA place and route tool",
+    description="nextpnr-ice40 FPGA place and route tool",
     long_description=long_description(),
     long_description_content_type="text/markdown",
     license="ISC", # same as Yosys
@@ -75,8 +75,8 @@ setup(
     **setup_info,
     project_urls={
         "Homepage": "https://yowasp.github.io/",
-        "Source Code": "https://github.com/YoWASP/nextpnr-ice40",
-        "Bug Tracker": "https://github.com/YoWASP/nextpnr-ice40/issues",
+        "Source Code": "https://github.com/YoWASP/nextpnr",
+        "Bug Tracker": "https://github.com/YoWASP/nextpnr/issues",
     },
     classifiers=[
         "License :: OSI Approved :: ISC License (ISCL)",
