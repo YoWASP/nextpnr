@@ -5,3 +5,4 @@
 /eigen-*
 /*-build
 /*-prefix
+/Toolchain-WASI.cmake
