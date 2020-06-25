@@ -17,22 +17,8 @@ EIGEN=eigen-3.3.7
 EIGEN_URL=https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
 if ! [ -d ${EIGEN} ]; then curl -L ${EIGEN_URL} | tar xzf -; fi
 
-cmake -B eigen-build -S ${EIGEN} -DCMAKE_INSTALL_PREFIX=$(pwd)/eigen-prefix
-make -C eigen-build install
-
-# remove once https://github.com/cliffordwolf/icestorm/pull/260 gets merged
-sed -i 's/getpid()/0/' -i icestorm-src/icebram/icebram.cc
-make -C icestorm-src EXE=".wasm" \
-	CXX="ccache ${WASI_SDK_PATH}/bin/clang++" \
-	CXXFLAGS="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -fno-exceptions" \
-	LDFLAGS="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -fno-exceptions" \
-	SUBDIRS="icebox icepack icemulti icepll icebram" \
-  PREFIX="" DESTDIR=$(pwd)/icestorm-prefix \
-  install
-cp icestorm-src/icefuzz/timings_*.txt $(pwd)/icestorm-prefix/share/icebox/
-
-if ! [ -f ${BOOST}/tools/build/src/engine/b2 ]; then 
-	(cd ${BOOST}/tools/build/src/engine && ./build.sh); 
+if ! [ -f ${BOOST}/tools/build/src/engine/b2 ]; then
+	(cd ${BOOST}/tools/build/src/engine && ./build.sh);
 fi
 cat >${BOOST}/project-config.jam <<END
 using clang : : ccache clang++ --sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -D_WASI_EMULATED_MMAN -DBOOST_NO_EXCEPTIONS -DBOOST_SP_NO_ATOMIC_ACCESS -DBOOST_AC_DISABLE_THREADS -DBOOST_NO_CXX11_HDR_MUTEX -DBOOST_HAS_UNISTD_H ;
@@ -41,6 +27,20 @@ project : default-build <toolset>clang ;
 libraries = --with-program_options --with-iostreams --with-filesystem --with-system ;
 END
 (cd ${BOOST} && PATH=${WASI_SDK_PATH}/bin:$PATH ./tools/build/src/engine/b2 threading=single link=static)
+
+cmake -B eigen-build -S ${EIGEN} -DCMAKE_INSTALL_PREFIX=$(pwd)/eigen-prefix
+make -C eigen-build install
+
+# remove once https://github.com/cliffordwolf/icestorm/pull/260 gets merged
+sed -i 's/getpid()/0/' -i icestorm-src/icebram/icebram.cc
+make -C icestorm-src EXE=".wasm" \
+	CXX="ccache ${WASI_SDK_PATH}/bin/clang++" \
+	CXXFLAGS="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -fno-exceptions -flto" \
+	LDFLAGS="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -fno-exceptions -flto -Wl,--strip-all" \
+	SUBDIRS="icebox icepack icemulti icepll icebram" \
+  PREFIX="" DESTDIR=$(pwd)/icestorm-prefix \
+  install
+cp icestorm-src/icefuzz/timings_*.txt $(pwd)/icestorm-prefix/share/icebox/
 
 cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
