@@ -29,10 +29,10 @@ if "DEVICE" not in os.environ:
             "importlib_resources; python_version<'3.9'",
             "wasmtime~=0.18.1"
         ],
-        packages=["yowasp_nextpnr_ecp5", "yowasp_nextpnr_ecp5.bin"],
+        packages=["yowasp_nextpnr_ecp5"],
         package_data={
-            "yowasp_nextpnr_ecp5.bin": ["*.wasm"],
             "yowasp_nextpnr_ecp5": [
+                "*.wasm",
                 "share/trellis/database/devices.json",
                 "share/trellis/database/ECP5/tiledata/**/*",
                 "share/trellis/database/ECP5/timing/**/*",
@@ -40,12 +40,12 @@ if "DEVICE" not in os.environ:
         },
         entry_points={
             "console_scripts": [
-                "yowasp-ecppll = yowasp_nextpnr_ecp5.bin:run_ecppll",
-                "yowasp-ecpbram = yowasp_nextpnr_ecp5.bin:run_ecpbram",
-                "yowasp-ecpmulti = yowasp_nextpnr_ecp5.bin:run_ecpmulti",
-                "yowasp-ecppack = yowasp_nextpnr_ecp5.bin:run_ecppack",
-                "yowasp-ecpunpack = yowasp_nextpnr_ecp5.bin:run_ecpunpack",
-                "yowasp-nextpnr-ecp5 = yowasp_nextpnr_ecp5.bin:run_nextpnr_ecp5",
+                "yowasp-ecppll = yowasp_nextpnr_ecp5:_run_ecppll_argv",
+                "yowasp-ecpbram = yowasp_nextpnr_ecp5:_run_ecpbram_argv",
+                "yowasp-ecpmulti = yowasp_nextpnr_ecp5:_run_ecpmulti_argv",
+                "yowasp-ecppack = yowasp_nextpnr_ecp5:_run_ecppack_argv",
+                "yowasp-ecpunpack = yowasp_nextpnr_ecp5:_run_ecpunpack_argv",
+                "yowasp-nextpnr-ecp5 = yowasp_nextpnr_ecp5:_run_nextpnr_ecp5_argv",
             ],
         },
     )

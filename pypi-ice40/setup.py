@@ -29,16 +29,18 @@ if "DEVICE" not in os.environ:
             "importlib_resources; python_version<'3.9'",
             "wasmtime~=0.18.1"
         ],
-        packages=["yowasp_nextpnr_ice40.bin"],
-        package_data={"yowasp_nextpnr_ice40.bin": ["*.wasm"]},
+        packages=["yowasp_nextpnr_ice40"],
+        package_data={"yowasp_nextpnr_ice40": [
+            "*.wasm",
+        ]},
         entry_points={
             "console_scripts": [
-                "yowasp-icepll = yowasp_nextpnr_ice40.bin:run_icepll",
-                "yowasp-icebram = yowasp_nextpnr_ice40.bin:run_icebram",
-                "yowasp-icemulti = yowasp_nextpnr_ice40.bin:run_icemulti",
-                "yowasp-icepack = yowasp_nextpnr_ice40.bin:run_icepack",
-                "yowasp-iceunpack = yowasp_nextpnr_ice40.bin:run_iceunpack",
-                "yowasp-nextpnr-ice40 = yowasp_nextpnr_ice40.bin:run_nextpnr_ice40",
+                "yowasp-icepll = yowasp_nextpnr_ice40:_run_icepll_argv",
+                "yowasp-icebram = yowasp_nextpnr_ice40:_run_icebram_argv",
+                "yowasp-icemulti = yowasp_nextpnr_ice40:_run_icemulti_argv",
+                "yowasp-icepack = yowasp_nextpnr_ice40:_run_icepack_argv",
+                "yowasp-iceunpack = yowasp_nextpnr_ice40:_run_iceunpack_argv",
+                "yowasp-nextpnr-ice40 = yowasp_nextpnr_ice40:_run_nextpnr_ice40_argv",
             ],
         },
     )
