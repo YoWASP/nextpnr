@@ -27,7 +27,7 @@ if "DEVICE" not in os.environ:
         version=version(),
         install_requires=[
             "importlib_resources; python_version<'3.9'",
-            "wasmtime~=0.18.2"
+            "wasmtime~=0.19.0"
         ],
         packages=["yowasp_nextpnr_ice40"],
         package_data={"yowasp_nextpnr_ice40": [
