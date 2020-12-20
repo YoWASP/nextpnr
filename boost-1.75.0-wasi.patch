@@ -1,0 +1,19 @@
+diff -ur a/libs/filesystem/src/operations.cpp b/libs/filesystem/src/operations.cpp
+--- a/libs/filesystem/src/operations.cpp	2020-12-20 20:09:48.819922430 +0000
++++ b/libs/filesystem/src/operations.cpp	2020-12-20 20:10:19.495907271 +0000
+@@ -1353,6 +1353,7 @@
+   if (BOOST_UNLIKELY(err != 0))
+     goto fail; // err already contains the error code
+
++#if !defined(__wasm)
+   // If we created a new file with an explicitly added S_IWUSR permission,
+   // we may need to update its mode bits to match the source file.
+   if (to_mode != from_mode)
+@@ -1360,6 +1361,7 @@
+     if (BOOST_UNLIKELY(::fchmod(outfile.fd, from_mode) != 0))
+       goto fail_errno;
+   }
++#endif
+
+   // Note: Use fsync/fdatasync followed by close to avoid dealing with the possibility of close failing with EINTR.
+   // Even if close fails, including with EINTR, most operating systems (presumably, except HP-UX) will close the
