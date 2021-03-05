@@ -6,14 +6,14 @@ from setuptools_scm.git import parse as parse_git
 def version():
     upstream_git = parse_git("../nextpnr-src")
     if upstream_git.exact:
-        yosys_version = upstream_git.format_with("{tag}")
+        nextpnr_version = upstream_git.format_with("{tag}")
     else:
-        yosys_version = upstream_git.format_with("{tag}.post{distance}")
+        nextpnr_version = upstream_git.format_with("{tag}.post{distance}")
 
     package_git = parse_git("..")
     package_version = package_git.format_with(".dev{distance}")
 
-    return yosys_version + package_version
+    return nextpnr_version + package_version
 
 
 def long_description():
