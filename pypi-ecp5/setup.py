@@ -11,7 +11,10 @@ def version():
         nextpnr_version = upstream_git.format_with("{tag}.post{distance}")
 
     package_git = parse_git("..")
-    package_version = package_git.format_with(".dev{distance}")
+    if not package_git.dirty:
+        package_version = package_git.format_with(".dev{distance}")
+    else:
+        package_version = package_git.format_with(".dev{distance}+dirty")
 
     return nextpnr_version + package_version
 
