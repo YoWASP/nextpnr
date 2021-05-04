@@ -8,7 +8,7 @@ if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 WASI_SDK_PATH=$(pwd)/${WASI_SDK}
 
 BOOST=boost_1_75_0
-BOOST_URL=https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz
+BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.gz
 if ! [ -d ${BOOST} ]; then 
   curl -L ${BOOST_URL} | tar xzf -
   # not necessary once boost 1.76.0 is released
