@@ -7,13 +7,9 @@ WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 WASI_SDK_PATH=$(pwd)/${WASI_SDK}
 
-BOOST=boost_1_75_0
-BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.gz
-if ! [ -d ${BOOST} ]; then 
-  curl -L ${BOOST_URL} | tar xzf -
-  # not necessary once boost 1.76.0 is released
-  patch -d ${BOOST} -p1 <boost-1.75.0-wasi.patch
-fi
+BOOST=boost_1_76_0
+BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz
+if ! [ -d ${BOOST} ]; then curl -L ${BOOST_URL} | tar xzf -; fi
 
 EIGEN=eigen-3.3.9
 EIGEN_URL=https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz
