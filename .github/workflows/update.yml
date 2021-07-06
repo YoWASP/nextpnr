@@ -16,6 +16,7 @@ jobs:
         run: |
           git -C icestorm-src pull --ff-only origin master
           git -C prjtrellis-src pull --ff-only origin master
+          git -C prjoxide-src pull --ff-only origin master
           git -C nextpnr-src pull --ff-only origin master
       - name: Push updated code
         uses: stefanzweifel/git-auto-commit-action@v4

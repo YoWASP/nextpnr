@@ -7,3 +7,6 @@
 [submodule "prjtrellis-src"]
 	path = prjtrellis-src
 	url = https://github.com/YosysHQ/prjtrellis
+[submodule "prjoxide-src"]
+	path = prjoxide-src
+	url = https://github.com/gatecat/prjoxide.git

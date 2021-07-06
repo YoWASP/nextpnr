@@ -12,6 +12,13 @@ jobs:
           submodules: recursive
       - name: Set up Python
         uses: actions/setup-python@v2
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          target: wasm32-wasi
+          override: true
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools setuptools_scm wheel
@@ -61,6 +68,20 @@ jobs:
           yowasp-ecpunpack --help || true
           yowasp-nextpnr-ecp5 --help
           yowasp-nextpnr-ecp5 --um5g-25k --package CABGA381 --test
+      - name: Build Nexus binary wheels
+        run: |
+          ./package-pypi-nexus.sh
+      - name: Upload Nexus binary wheel artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheel
+          path: pypi-nexus/dist/
+      - name: Test Nexus binary wheels
+        run: |
+          pip install pypi-nexus/dist/*.whl
+          yowasp-prjoxide --help
+          yowasp-nextpnr-nexus --help
+          yowasp-nextpnr-nexus --device LIFCL-40-9BG400CES --test
   upload_wheels:
     needs: build
     runs-on: ubuntu-latest

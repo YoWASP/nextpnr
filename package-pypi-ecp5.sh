@@ -4,10 +4,10 @@ PYTHON=${PYTHON:-python}
 
 mkdir -p pypi-ecp5/yowasp_nextpnr_ecp5/bin/
 cp prjtrellis-build/ecppll.wasm \
-	 prjtrellis-build/ecpbram.wasm \
-	 prjtrellis-build/ecpmulti.wasm \
-	 prjtrellis-build/ecppack.wasm \
-	 prjtrellis-build/ecpunpack.wasm \
+   prjtrellis-build/ecpbram.wasm \
+   prjtrellis-build/ecpmulti.wasm \
+   prjtrellis-build/ecppack.wasm \
+   prjtrellis-build/ecpunpack.wasm \
    nextpnr-build/nextpnr-ecp5.wasm \
    pypi-ecp5/yowasp_nextpnr_ecp5/
 mkdir -p pypi-ecp5/yowasp_nextpnr_ecp5/share/ecp5

@@ -75,6 +75,15 @@ cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
   -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix
 make -C libtrellis-build install
 
+cargo build --target-dir prjoxide-build \
+  --manifest-path prjoxide-src/libprjoxide/prjoxide/Cargo.toml \
+  --target wasm32-wasi \
+  --release
+
+cargo install --target-dir prjoxide-build \
+  --path prjoxide-src/libprjoxide/prjoxide \
+  --root prjoxide-prefix
+
 cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
 
@@ -90,7 +99,8 @@ cmake -B nextpnr-build -S nextpnr-src \
   -DBUILD_PYTHON=OFF \
   -DEXTERNAL_CHIPDB=ON \
   -DEXTERNAL_CHIPDB_ROOT=/share \
-  -DARCH="ice40;ecp5" \
+  -DARCH="ice40;ecp5;nexus" \
   -DICESTORM_INSTALL_PREFIX=$(pwd)/icestorm-prefix \
-  -DTRELLIS_INSTALL_PREFIX=$(pwd)/libtrellis-prefix
+  -DTRELLIS_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
+  -DOXIDE_INSTALL_PREFIX=$(pwd)/prjoxide-prefix
 cmake --build nextpnr-build
