@@ -20,9 +20,8 @@ cp -r prjtrellis-src/database/ECP5 \
 
 cd pypi-ecp5
 rm -rf build && ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=25k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=45k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=85k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=25k,45k,85k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=all ${PYTHON} setup.py bdist_wheel # deprecated but still published
+rm -rf build && ALIAS=25k ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=45k ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=85k ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=all ${PYTHON} setup.py bdist_wheel
 sha256sum dist/*.whl

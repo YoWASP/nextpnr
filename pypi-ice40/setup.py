@@ -24,10 +24,12 @@ def long_description():
         return f.read()
 
 
-if "DEVICE" not in os.environ:
+if "ALIAS" not in os.environ:
     setup_info = dict(
-        name="yowasp-nextpnr-ice40-base",
+        name="yowasp-nextpnr-ice40",
         version=version(),
+        long_description=long_description(),
+        long_description_content_type="text/markdown",
         install_requires=[
             "importlib_resources; python_version<'3.9'",
             "appdirs~=1.4",
@@ -36,6 +38,7 @@ if "DEVICE" not in os.environ:
         packages=["yowasp_nextpnr_ice40"],
         package_data={"yowasp_nextpnr_ice40": [
             "*.wasm",
+            "share/ice40/chipdb-*.bin"
         ]},
         entry_points={
             "console_scripts": [
@@ -48,32 +51,15 @@ if "DEVICE" not in os.environ:
             ],
         },
     )
-elif "," in os.environ["DEVICE"]:
-    devices = os.environ["DEVICE"].split(",")
+else:
     setup_info = dict(
-        name="yowasp-nextpnr-ice40",
+        name="yowasp-nextpnr-ice40-{}".format(os.environ["ALIAS"]),
         version=version(),
-        install_requires=[
-            "yowasp-nextpnr-ice40-{}=={}".format(device, version())
-            for device in devices
-        ]
-    )
-elif "all" == os.environ["DEVICE"]: # deprecated but still published
-    setup_info = dict(
-        name="yowasp-nextpnr-ice40-all",
-        version=version(),
+        long_description="Transitional dummy package that depends on yowasp-nextpnr-ice40.",
+        long_description_content_type="text/markdown",
         install_requires=[
             "yowasp-nextpnr-ice40=={}".format(version()),
         ]
-    )
-else:
-    device = os.environ["DEVICE"]
-    setup_info = dict(
-        name="yowasp-nextpnr-ice40-{}".format(device),
-        version=version(),
-        install_requires=["yowasp-nextpnr-ice40-base=={}".format(version())],
-        packages=["yowasp_nextpnr_ice40"],
-        package_data={"yowasp_nextpnr_ice40": ["share/ice40/chipdb-{}.bin".format(device)],},
     )
 
 
@@ -81,8 +67,6 @@ setup(
     author="whitequark",
     author_email="whitequark@whitequark.org",
     description="nextpnr-ice40 FPGA place and route tool",
-    long_description=long_description(),
-    long_description_content_type="text/markdown",
     license="ISC", # same as Yosys
     python_requires="~=3.5",
     setup_requires=["setuptools_scm", "wheel"],

@@ -24,10 +24,12 @@ def long_description():
         return f.read()
 
 
-if "DEVICE" not in os.environ:
+if "ALIAS" not in os.environ:
     setup_info = dict(
-        name="yowasp-nextpnr-ecp5-base",
+        name="yowasp-nextpnr-ecp5",
         version=version(),
+        long_description=long_description(),
+        long_description_content_type="text/markdown",
         install_requires=[
             "importlib_resources; python_version<'3.9'",
             "appdirs~=1.4",
@@ -40,6 +42,8 @@ if "DEVICE" not in os.environ:
                 "share/trellis/database/devices.json",
                 "share/trellis/database/ECP5/tiledata/**/*",
                 "share/trellis/database/ECP5/timing/**/*",
+                "share/trellis/database/ECP5/LFE5*/*",
+                "share/ecp5/chipdb-*.bin"
             ],
         },
         entry_points={
@@ -53,46 +57,15 @@ if "DEVICE" not in os.environ:
             ],
         },
     )
-elif "," in os.environ["DEVICE"]:
-    devices = os.environ["DEVICE"].split(",")
+else:
     setup_info = dict(
-        name="yowasp-nextpnr-ecp5",
+        name="yowasp-nextpnr-ecp5-{}".format(os.environ["ALIAS"]),
         version=version(),
-        install_requires=[
-            "yowasp-nextpnr-ecp5-{}=={}".format(device, version())
-            for device in devices
-        ]
-    )
-elif "all" == os.environ["DEVICE"]: # deprecated but still published
-    setup_info = dict(
-        name="yowasp-nextpnr-ecp5-all",
-        version=version(),
+        long_description="Transitional dummy package that depends on yowasp-nextpnr-ecp5.",
+        long_description_content_type="text/markdown",
         install_requires=[
             "yowasp-nextpnr-ecp5=={}".format(version()),
         ]
-    )
-else:
-    device = os.environ["DEVICE"]
-    if device == "25k":
-        trellis_data = [
-            "share/trellis/database/ECP5/*-12F/*",
-            "share/trellis/database/ECP5/*-25F/*",
-        ]
-    if device == "45k":
-        trellis_data = ["share/trellis/database/ECP5/*-45F/*"]
-    if device == "85k":
-        trellis_data = ["share/trellis/database/ECP5/*-85F/*"]
-    setup_info = dict(
-        name="yowasp-nextpnr-ecp5-{}".format(device),
-        version=version(),
-        install_requires=["yowasp-nextpnr-ecp5-base=={}".format(version())],
-        packages=["yowasp_nextpnr_ecp5"],
-        package_data={
-            "yowasp_nextpnr_ecp5": [
-                "share/ecp5/chipdb-{}.bin".format(device),
-                *trellis_data
-            ],
-        },
     )
 
 
@@ -100,8 +73,6 @@ setup(
     author="whitequark",
     author_email="whitequark@whitequark.org",
     description="nextpnr-ecp5 FPGA place and route tool",
-    long_description=long_description(),
-    long_description_content_type="text/markdown",
     license="ISC", # same as Yosys
     python_requires="~=3.5",
     setup_requires=["setuptools_scm", "wheel"],

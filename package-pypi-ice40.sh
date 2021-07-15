@@ -15,11 +15,10 @@ cp nextpnr-build/ice40/chipdb/*.bin \
 
 cd pypi-ice40
 rm -rf build && ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=384 ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=1k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=5k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=8k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=u4k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=384,1k,5k,8k,u4k ${PYTHON} setup.py bdist_wheel
-rm -rf build && DEVICE=all ${PYTHON} setup.py bdist_wheel # deprecated but still published
+rm -rf build && ALIAS=384 ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=1k ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=5k ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=8k ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=u4k ${PYTHON} setup.py bdist_wheel
+rm -rf build && ALIAS=all ${PYTHON} setup.py bdist_wheel 
 sha256sum dist/*.whl
