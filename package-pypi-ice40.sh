@@ -21,4 +21,5 @@ rm -rf build && DEVICE=5k ${PYTHON} setup.py bdist_wheel
 rm -rf build && DEVICE=8k ${PYTHON} setup.py bdist_wheel
 rm -rf build && DEVICE=u4k ${PYTHON} setup.py bdist_wheel
 rm -rf build && DEVICE=384,1k,5k,8k,u4k ${PYTHON} setup.py bdist_wheel
+rm -rf build && DEVICE=all ${PYTHON} setup.py bdist_wheel # deprecated but still published
 sha256sum dist/*.whl

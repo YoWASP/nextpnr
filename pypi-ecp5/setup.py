@@ -26,7 +26,7 @@ def long_description():
 
 if "DEVICE" not in os.environ:
     setup_info = dict(
-        name="yowasp-nextpnr-ecp5",
+        name="yowasp-nextpnr-ecp5-base",
         version=version(),
         install_requires=[
             "importlib_resources; python_version<'3.9'",
@@ -56,11 +56,19 @@ if "DEVICE" not in os.environ:
 elif "," in os.environ["DEVICE"]:
     devices = os.environ["DEVICE"].split(",")
     setup_info = dict(
-        name="yowasp-nextpnr-ecp5-all",
+        name="yowasp-nextpnr-ecp5",
         version=version(),
         install_requires=[
             "yowasp-nextpnr-ecp5-{}=={}".format(device, version())
             for device in devices
+        ]
+    )
+elif "all" == os.environ["DEVICE"]: # deprecated but still published
+    setup_info = dict(
+        name="yowasp-nextpnr-ecp5-all",
+        version=version(),
+        install_requires=[
+            "yowasp-nextpnr-ecp5=={}".format(version()),
         ]
     )
 else:
@@ -77,7 +85,7 @@ else:
     setup_info = dict(
         name="yowasp-nextpnr-ecp5-{}".format(device),
         version=version(),
-        install_requires=["yowasp-nextpnr-ecp5=={}".format(version())],
+        install_requires=["yowasp-nextpnr-ecp5-base=={}".format(version())],
         packages=["yowasp_nextpnr_ecp5"],
         package_data={
             "yowasp_nextpnr_ecp5": [
