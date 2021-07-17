@@ -1,6 +1,7 @@
 #!/bin/sh -ex
 
-PYTHON=${PYTHON:-python}
+# Use venv python to extract Apcula version
+PYTHON=${PYTHON:-apycula-prefix/bin/python}
 
 mkdir -p pypi-gowin/yowasp_nextpnr_gowin/bin/
 cp nextpnr-build/nextpnr-gowin.wasm \

@@ -82,6 +82,19 @@ jobs:
           yowasp-prjoxide --help
           yowasp-nextpnr-nexus --help
           yowasp-nextpnr-nexus --device LIFCL-40-9BG400CES --test
+      - name: Build Gowin binary wheels
+        run: |
+          ./package-pypi-gowin.sh
+      - name: Upload Gowin binary wheel artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheel
+          path: pypi-gowin/dist/
+      - name: Test Gowin binary wheels
+        run: |
+          pip install pypi-gowin/dist/*.whl
+          yowasp-nextpnr-gowin --help
+          yowasp-nextpnr-gowin --device GW1N-LV1QN48C6/I5 --test
   upload_wheels:
     needs: build
     runs-on: ubuntu-latest
