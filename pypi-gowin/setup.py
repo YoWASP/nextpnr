@@ -1,7 +1,15 @@
 import os
+import subprocess
+import sys
 from setuptools import setup, find_packages
 from setuptools_scm.git import parse as parse_git
 
+def apycula_version():
+    reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
+    for req in reqs.decode().splitlines():
+        if "Apycula" in req:
+            return req
+    raise Exception("Apycula not installed")
 
 def version():
     upstream_git = parse_git("../nextpnr-src")
@@ -30,7 +38,8 @@ setup_info = dict(
     install_requires=[
         "importlib_resources; python_version<'3.9'",
         "appdirs~=1.4",
-        "wasmtime>=0.28,<0.29"
+        "wasmtime>=0.28,<0.29",
+        apycula_version()
     ],
     packages=["yowasp_nextpnr_gowin"],
     package_data={
