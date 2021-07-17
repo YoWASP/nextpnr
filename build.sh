@@ -90,7 +90,7 @@ cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
 
 ${PYTHON} -m venv apycula-prefix
-./apycula-prefix/bin/pip install apycula
+./apycula-prefix/bin/pip install apycula setuptools_scm
 
 mkdir -p nextpnr-build
 cmake -B nextpnr-build -S nextpnr-src \
