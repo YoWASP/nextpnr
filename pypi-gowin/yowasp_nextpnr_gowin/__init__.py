@@ -59,7 +59,6 @@ def _run_wasm_app(wasm_filename, argv):
         return trap.code
 
 
-
 def run_nextpnr_gowin(argv):
     return _run_wasm_app("nextpnr-gowin.wasm", ["yowasp-nextpnr-gowin", *argv])
 
