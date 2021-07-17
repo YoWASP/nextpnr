@@ -3,10 +3,8 @@ import subprocess
 import sys
 from setuptools import setup, find_packages
 from setuptools_scm.git import parse as parse_git
-from importlib import metadata as importlib_metadata  # py3.8+ stdlib
+import importlib.metadata
 
-def apycula_version():
-    return importlib_metadata.version('apycula')
 
 def version():
     upstream_git = parse_git("../nextpnr-src")
@@ -36,7 +34,7 @@ setup_info = dict(
         "importlib_resources; python_version<'3.9'",
         "appdirs~=1.4",
         "wasmtime>=0.28,<0.29",
-        "Apycula=="+apycula_version()
+        "Apycula=={}".format(importlib.metadata.version("apycula"))
     ],
     packages=["yowasp_nextpnr_gowin"],
     package_data={
