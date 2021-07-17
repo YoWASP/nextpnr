@@ -87,7 +87,7 @@ cargo install --target-dir prjoxide-build \
 cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
 
-python -m venv apycula-prefix
+${PYTHON:-python} -m venv apycula-prefix
 ./apycula-prefix/bin/pip install apycula
 
 mkdir -p nextpnr-build
