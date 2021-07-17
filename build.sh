@@ -87,6 +87,9 @@ cargo install --target-dir prjoxide-build \
 cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
 
+python -m venv apycula-prefix
+./apycula-prefix/bin/pip install apycula
+
 mkdir -p nextpnr-build
 cmake -B nextpnr-build -S nextpnr-src \
   -DCMAKE_TOOLCHAIN_FILE=../Toolchain-WASI.cmake \
@@ -99,8 +102,9 @@ cmake -B nextpnr-build -S nextpnr-src \
   -DBUILD_PYTHON=OFF \
   -DEXTERNAL_CHIPDB=ON \
   -DEXTERNAL_CHIPDB_ROOT=/share \
-  -DARCH="ice40;ecp5;nexus" \
+  -DARCH="ice40;ecp5;nexus;gowin" \
   -DICESTORM_INSTALL_PREFIX=$(pwd)/icestorm-prefix \
   -DTRELLIS_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
-  -DOXIDE_INSTALL_PREFIX=$(pwd)/prjoxide-prefix
+  -DOXIDE_INSTALL_PREFIX=$(pwd)/prjoxide-prefix \
+  -DGOWIN_BBA_EXECUTABLE=$(pwd)/apycula-prefix/bin/gowin_bba
 cmake --build nextpnr-build
