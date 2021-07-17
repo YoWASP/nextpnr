@@ -2,6 +2,8 @@
 
 export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
 
+PYTHON=$(which ${PYTHON:-python})
+
 WASI_SDK=wasi-sdk-11.0
 WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-11/wasi-sdk-11.0-linux.tar.gz
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
@@ -72,7 +74,8 @@ cmake -B prjtrellis-build -S prjtrellis-src/libtrellis \
 cmake --build prjtrellis-build
 
 cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
-  -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix
+  -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
+  -DPYTHON_EXECUTABLE=${PYTHON} 
 make -C libtrellis-build install
 
 cargo build --target-dir prjoxide-build \
@@ -87,10 +90,14 @@ cargo install --target-dir prjoxide-build \
 cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
 
+${PYTHON} -m venv apycula-prefix
+./apycula-prefix/bin/pip install apycula setuptools_scm
+
 mkdir -p nextpnr-build
 cmake -B nextpnr-build -S nextpnr-src \
   -DCMAKE_TOOLCHAIN_FILE=../Toolchain-WASI.cmake \
   -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+  -DPYTHON_EXECUTABLE=${PYTHON} \
   -DSTATIC_BUILD=ON \
   -DBOOST_ROOT=$(pwd)/${BOOST} \
   -DEigen3_DIR=$(pwd)/eigen-prefix/share/eigen3/cmake \
@@ -99,8 +106,9 @@ cmake -B nextpnr-build -S nextpnr-src \
   -DBUILD_PYTHON=OFF \
   -DEXTERNAL_CHIPDB=ON \
   -DEXTERNAL_CHIPDB_ROOT=/share \
-  -DARCH="ice40;ecp5;nexus" \
+  -DARCH="ice40;ecp5;nexus;gowin" \
   -DICESTORM_INSTALL_PREFIX=$(pwd)/icestorm-prefix \
   -DTRELLIS_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
-  -DOXIDE_INSTALL_PREFIX=$(pwd)/prjoxide-prefix
+  -DOXIDE_INSTALL_PREFIX=$(pwd)/prjoxide-prefix \
+  -DGOWIN_BBA_EXECUTABLE=$(pwd)/apycula-prefix/bin/gowin_bba
 cmake --build nextpnr-build
