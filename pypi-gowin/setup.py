@@ -5,11 +5,14 @@ from setuptools import setup, find_packages
 from setuptools_scm.git import parse as parse_git
 
 def apycula_version():
-    reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
-    for req in reqs.decode().splitlines():
-        if "Apycula" in req:
-            return req
-    raise Exception("Apycula not installed")
+    try:
+        try:
+            from importlib import metadata as importlib_metadata  # py3.8+ stdlib
+        except ImportError:
+            import importlib_metadata # py3.7- shim
+    except ImportError:
+        return "" # dummy version for 3.7
+    return importlib_metadata.version('apycula')
 
 def version():
     upstream_git = parse_git("../nextpnr-src")
@@ -39,7 +42,7 @@ setup_info = dict(
         "importlib_resources; python_version<'3.9'",
         "appdirs~=1.4",
         "wasmtime>=0.28,<0.29",
-        apycula_version()
+        "Apycula=="+apycula_version()
     ],
     packages=["yowasp_nextpnr_gowin"],
     package_data={
@@ -64,7 +67,8 @@ setup(
     long_description_content_type="text/markdown",
     license="ISC", # same as Yosys
     python_requires="~=3.5",
-    setup_requires=["setuptools_scm", "wheel"],
+    setup_requires=["setuptools_scm", "wheel",
+                    "importlib_metadata; python_version<'3.8'"],
     **setup_info,
     project_urls={
         "Homepage": "https://yowasp.github.io/",
