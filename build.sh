@@ -74,7 +74,8 @@ cmake -B prjtrellis-build -S prjtrellis-src/libtrellis \
 cmake --build prjtrellis-build
 
 cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
-  -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix
+  -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
+  -DPYTHON_EXECUTABLE=${PYTHON} 
 make -C libtrellis-build install
 
 cargo build --target-dir prjoxide-build \
