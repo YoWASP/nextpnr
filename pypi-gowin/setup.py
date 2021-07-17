@@ -3,15 +3,9 @@ import subprocess
 import sys
 from setuptools import setup, find_packages
 from setuptools_scm.git import parse as parse_git
+from importlib import metadata as importlib_metadata  # py3.8+ stdlib
 
 def apycula_version():
-    try:
-        try:
-            from importlib import metadata as importlib_metadata  # py3.8+ stdlib
-        except ImportError:
-            import importlib_metadata # py3.7- shim
-    except ImportError:
-        return "" # dummy version for 3.7
     return importlib_metadata.version('apycula')
 
 def version():
@@ -67,8 +61,7 @@ setup(
     long_description_content_type="text/markdown",
     license="ISC", # same as Yosys
     python_requires="~=3.5",
-    setup_requires=["setuptools_scm", "wheel",
-                    "importlib_metadata; python_version<'3.8'"],
+    setup_requires=["setuptools_scm", "wheel"],
     **setup_info,
     project_urls={
         "Homepage": "https://yowasp.github.io/",
