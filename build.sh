@@ -2,6 +2,8 @@
 
 export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
 
+PYTHON=$(which ${PYTHON:-python})
+
 WASI_SDK=wasi-sdk-11.0
 WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-11/wasi-sdk-11.0-linux.tar.gz
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
@@ -87,13 +89,14 @@ cargo install --target-dir prjoxide-build \
 cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
 
-${PYTHON:-python} -m venv apycula-prefix
+${PYTHON} -m venv apycula-prefix
 ./apycula-prefix/bin/pip install apycula
 
 mkdir -p nextpnr-build
 cmake -B nextpnr-build -S nextpnr-src \
   -DCMAKE_TOOLCHAIN_FILE=../Toolchain-WASI.cmake \
   -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+  -DPYTHON_EXECUTABLE=${PYTHON} \
   -DSTATIC_BUILD=ON \
   -DBOOST_ROOT=$(pwd)/${BOOST} \
   -DEigen3_DIR=$(pwd)/eigen-prefix/share/eigen3/cmake \
