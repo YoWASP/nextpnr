@@ -1,5 +1,5 @@
 on: [push, pull_request]
-name: Build & upload
+name: Build & publish
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
@@ -95,7 +95,7 @@ jobs:
           pip install pypi-gowin/dist/*.whl
           yowasp-nextpnr-gowin --help
           yowasp-nextpnr-gowin --device GW1N-LV1QN48C6/I5 --test
-  upload_wheels:
+  publish:
     needs: build
     runs-on: ubuntu-latest
     steps:
