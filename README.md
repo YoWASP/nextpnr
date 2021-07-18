@@ -1,12 +1,21 @@
 YoWASP nextpnr packages
 =======================
 
-This package provides [nextpnr][] targeting the iCE40 family and [IceStorm][] binaries built for [WebAssembly][]. See the [overview of the YoWASP project][yowasp] for details.
+The YoWASP nextpnr suite of packages provides [nextpnr][] and related tools for several FPGA families built for [WebAssembly][]. See the [overview of the YoWASP project][yowasp] for details.
+
+The suppored FPGA families are:
+	* Lattice iCE40 (via [Project IceStorm][icestorm]);
+	* Lattice ECP5 (via [Project Trellis][trellis]);
+	* Lattice Nexus (via [Project Oxide][oxide]);
+	* Gowin GW1N (via [Project Apicula][apicula]).
 
 [nextpnr]: https://github.com/YosysHQ/nextpnr/
-[icestorm]: https://github.com/cliffordwolf/icestorm/
 [webassembly]: https://webassembly.org/
 [yowasp]: https://yowasp.github.io/
+[icestorm]: https://github.com/YosysHQ/icestorm/
+[trellis]: https://github.com/YosysHQ/prjtrellis/
+[oxide]: https://github.com/gatecat/prjoxide
+[apicula]: https://github.com/YosysHQ/apicula
 
 License
 -------
