@@ -30,7 +30,7 @@ setup_info = dict(
     install_requires=[
         "importlib_resources; python_version<'3.9'",
         "appdirs~=1.4",
-        "wasmtime>=0.28,<0.29"
+        "wasmtime>=0.30,<0.31"
     ],
     packages=["yowasp_nextpnr_nexus"],
     package_data={

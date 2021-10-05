@@ -33,7 +33,7 @@ if "ALIAS" not in os.environ:
         install_requires=[
             "importlib_resources; python_version<'3.9'",
             "appdirs~=1.4",
-            "wasmtime>=0.28,<0.29"
+            "wasmtime>=0.30,<0.31"
         ],
         packages=["yowasp_nextpnr_ice40"],
         package_data={"yowasp_nextpnr_ice40": [
