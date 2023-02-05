@@ -6,28 +6,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           submodules: recursive
       - name: Set up Python
-        uses: actions/setup-python@v2
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
+        uses: actions/setup-python@v4
         with:
-          profile: minimal
-          toolchain: nightly
-          target: wasm32-wasi
-          override: true
+          python-version: '3.x'
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: wasm32-wasi
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools setuptools_scm wheel
           sudo apt-get install flex bison ccache cmake libboost-program-options-dev libboost-filesystem-dev libboost-system-dev libboost-thread-dev libboost-python-dev
-      - name: Set up ccache
-        uses: actions/cache@v1
+      - name: Set up caching
+        uses: actions/cache@v3
         with:
-          path: ~/.ccache
+          path: ~/.cache/ccache
           key: ${{ runner.os }}-
+      - name: Set up ccache
+        run: |
+          ccache --max-size=2G -z
       - name: Build WASM binaries
         run: |
           ./build.sh
@@ -35,7 +37,7 @@ jobs:
         run: |
           ./package-pypi-ice40.sh
       - name: Upload iCE40 binary wheel artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: wheel
           path: pypi-ice40/dist/
@@ -54,7 +56,7 @@ jobs:
         run: |
           ./package-pypi-ecp5.sh
       - name: Upload ECP5 binary wheel artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: wheel
           path: pypi-ecp5/dist/
@@ -72,7 +74,7 @@ jobs:
         run: |
           ./package-pypi-nexus.sh
       - name: Upload Nexus binary wheel artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: wheel
           path: pypi-nexus/dist/
@@ -86,7 +88,7 @@ jobs:
         run: |
           ./package-pypi-gowin.sh
       - name: Upload Gowin binary wheel artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: wheel
           path: pypi-gowin/dist/
@@ -95,11 +97,14 @@ jobs:
           pip install pypi-gowin/dist/*.whl
           yowasp-nextpnr-gowin --help
           yowasp-nextpnr-gowin --device GW1N-LV1QN48C6/I5 --test
+      - name: Print ccache statistics
+        run: |
+          ccache -s
   publish:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: wheel
         path: dist/
@@ -116,3 +121,16 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.pypi_token }}
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'autorelease') && github.event_name == 'push' && github.ref == 'refs/heads/develop'"
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PUSH_TOKEN }}
+      - name: Update release branch
+        run: |
+          git push origin develop:release
