@@ -19,49 +19,10 @@ def version():
     return nextpnr_version + package_version
 
 
-def long_description():
-    with open("../README.md") as f:
-        return f.read()
-
-
-setup_info = dict(
-    name="yowasp-nextpnr-gowin",
+setup(
     version=version(),
     install_requires=[
         "yowasp-runtime~=1.1",
         "Apycula=={}".format(importlib.metadata.version("apycula"))
-    ],
-    packages=["yowasp_nextpnr_gowin"],
-    package_data={
-        "yowasp_nextpnr_gowin": [
-            "*.wasm",
-            "share/gowin/chipdb-*.bin",
-        ],
-    },
-    entry_points={
-        "console_scripts": [
-            "yowasp-nextpnr-gowin = yowasp_nextpnr_gowin:_run_nextpnr_gowin_argv",
-        ],
-    },
-)
-
-
-setup(
-    author="whitequark",
-    author_email="whitequark@whitequark.org",
-    description="nextpnr-gowin FPGA place and route tool",
-    long_description=long_description(),
-    long_description_content_type="text/markdown",
-    license="ISC", # same as Yosys
-    python_requires="~=3.5",
-    setup_requires=["setuptools_scm", "wheel"],
-    **setup_info,
-    project_urls={
-        "Homepage": "https://yowasp.github.io/",
-        "Source Code": "https://github.com/YoWASP/nextpnr",
-        "Bug Tracker": "https://github.com/YoWASP/nextpnr/issues",
-    },
-    classifiers=[
-        "License :: OSI Approved :: ISC License (ISCL)",
     ],
 )

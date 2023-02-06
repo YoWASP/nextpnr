@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools~=67.0", "setuptools_scm~=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+
+name = "yowasp-nextpnr-ecp5"
+description = "nextpnr-ecp5 FPGA place and route tool"
+readme = "README.md"
+authors = [{name = "Catherine", email = "whitequark@whitequark.org"}]
+license = {text = "ISC"}
+classifiers = [
+	"License :: OSI Approved :: ISC License (ISCL)"
+]
+
+dependencies = [
+	"yowasp-runtime~=1.1"
+]
+
+[project.scripts]
+yowasp-ecppll = "yowasp_nextpnr_ecp5:_run_ecppll_argv"
+yowasp-ecpbram = "yowasp_nextpnr_ecp5:_run_ecpbram_argv"
+yowasp-ecpmulti = "yowasp_nextpnr_ecp5:_run_ecpmulti_argv"
+yowasp-ecppack = "yowasp_nextpnr_ecp5:_run_ecppack_argv"
+yowasp-ecpunpack = "yowasp_nextpnr_ecp5:_run_ecpunpack_argv"
+yowasp-nextpnr-ecp5 = "yowasp_nextpnr_ecp5:_run_nextpnr_ecp5_argv"
+
+[project.urls]
+"Homepage" = "https://yowasp.org/"
+"Source Code" = "https://github.com/YoWASP/nextpnr"
+"Bug Tracker" = "https://github.com/YoWASP/nextpnr/issues"
+
+[tool.setuptools.package-data]
+yowasp_nextpnr_ecp5 = [            
+	"*.wasm",
+	"share/trellis/database/devices.json",
+	"share/trellis/database/ECP5/tiledata/**/*",
+	"share/trellis/database/ECP5/timing/**/*",
+	"share/trellis/database/ECP5/LFE5*/*",
+	"share/ecp5/chipdb-*.bin"
+]

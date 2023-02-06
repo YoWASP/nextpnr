@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools~=67.0", "setuptools_scm~=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version", "dependencies"]
+
+name = "yowasp-nextpnr-gowin"
+description = "nextpnr-gowin FPGA place and route tool"
+readme = "README.md"
+authors = [{name = "Catherine", email = "whitequark@whitequark.org"}]
+license = {text = "ISC"}
+classifiers = [
+	"License :: OSI Approved :: ISC License (ISCL)"
+]
+
+[project.scripts]
+yowasp-nextpnr-gowin = "yowasp_nextpnr_gowin:_run_nextpnr_gowin_argv"
+
+[project.urls]
+"Homepage" = "https://yowasp.org/"
+"Source Code" = "https://github.com/YoWASP/nextpnr"
+"Bug Tracker" = "https://github.com/YoWASP/nextpnr/issues"
+
+[tool.setuptools.package-data]
+yowasp_nextpnr_gowin = [
+	"*.wasm",
+	"share/gowin/chipdb-*.bin",
+]

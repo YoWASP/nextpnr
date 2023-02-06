@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools~=67.0", "setuptools_scm~=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+
+name = "yowasp-nextpnr-ice40"
+description = "nextpnr-ice40 FPGA place and route tool"
+readme = "README.md"
+authors = [{name = "Catherine", email = "whitequark@whitequark.org"}]
+license = {text = "ISC"}
+classifiers = [
+	"License :: OSI Approved :: ISC License (ISCL)"
+]
+
+dependencies = [
+	"yowasp-runtime~=1.1"
+]
+
+[project.scripts]
+yowasp-icepll = "yowasp_nextpnr_ice40:_run_icepll_argv"
+yowasp-icebram = "yowasp_nextpnr_ice40:_run_icebram_argv"
+yowasp-icemulti = "yowasp_nextpnr_ice40:_run_icemulti_argv"
+yowasp-icepack = "yowasp_nextpnr_ice40:_run_icepack_argv"
+yowasp-iceunpack = "yowasp_nextpnr_ice40:_run_iceunpack_argv"
+yowasp-nextpnr-ice40 = "yowasp_nextpnr_ice40:_run_nextpnr_ice40_argv"
+
+[project.urls]
+"Homepage" = "https://yowasp.org/"
+"Source Code" = "https://github.com/YoWASP/nextpnr"
+"Bug Tracker" = "https://github.com/YoWASP/nextpnr/issues"
+
+[tool.setuptools.package-data]
+yowasp_nextpnr_ice40 = [
+	"*.wasm", 
+	"share/ice40/chipdb-*.bin"
+]

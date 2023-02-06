@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools~=67.0", "setuptools_scm~=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+
+name = "yowasp-nextpnr-nexus"
+description = "nextpnr-nexus FPGA place and route tool"
+readme = "README.md"
+authors = [{name = "Catherine", email = "whitequark@whitequark.org"}]
+license = {text = "ISC"}
+classifiers = [
+  "License :: OSI Approved :: ISC License (ISCL)"
+]
+
+dependencies = [
+  "yowasp-runtime~=1.1"
+]
+
+[project.scripts]
+yowasp-prjoxide = "yowasp_nextpnr_nexus:_run_prjoxide_argv"
+yowasp-nextpnr-nexus = "yowasp_nextpnr_nexus:_run_nextpnr_nexus_argv"
+
+[project.urls]
+"Homepage" = "https://yowasp.org/"
+"Source Code" = "https://github.com/YoWASP/nextpnr"
+"Bug Tracker" = "https://github.com/YoWASP/nextpnr/issues"
+
+[tool.setuptools.package-data]
+yowasp_nextpnr_nexus = [
+  "*.wasm",
+  "share/nexus/chipdb-*.bin",
+]
