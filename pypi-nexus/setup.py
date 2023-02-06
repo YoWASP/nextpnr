@@ -1,21 +1,8 @@
-from setuptools import setup, find_packages
-from setuptools_scm.git import parse as parse_git
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "pypi-common"))
 
-
-def version():
-    upstream_git = parse_git("../nextpnr-src")
-    if upstream_git.exact:
-        nextpnr_version = upstream_git.format_with("{tag}")
-    else:
-        nextpnr_version = upstream_git.format_with("{tag}.post{distance}")
-
-    package_git = parse_git("..")
-    if not package_git.dirty:
-        package_version = package_git.format_with(".dev{distance}")
-    else:
-        package_version = package_git.format_with(".dev{distance}+dirty")
-
-    return nextpnr_version + package_version
+from setuptools import setup
+from yowasp_nextpnr_version import version
 
 
 setup(
