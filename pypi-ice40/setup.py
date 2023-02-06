@@ -24,43 +24,32 @@ def long_description():
         return f.read()
 
 
-if "ALIAS" not in os.environ:
-    setup_info = dict(
-        name="yowasp-nextpnr-ice40",
-        version=version(),
-        long_description=long_description(),
-        long_description_content_type="text/markdown",
-        install_requires=[
-            "importlib_resources; python_version<'3.9'",
-            "appdirs~=1.4",
-            "wasmtime>=0.30,<2.0"
+setup_info = dict(
+    name="yowasp-nextpnr-ice40",
+    version=version(),
+    long_description=long_description(),
+    long_description_content_type="text/markdown",
+    install_requires=[
+        "importlib_resources; python_version<'3.9'",
+        "appdirs~=1.4",
+        "wasmtime>=0.30,<2.0"
+    ],
+    packages=["yowasp_nextpnr_ice40"],
+    package_data={"yowasp_nextpnr_ice40": [
+        "*.wasm",
+        "share/ice40/chipdb-*.bin"
+    ]},
+    entry_points={
+        "console_scripts": [
+            "yowasp-icepll = yowasp_nextpnr_ice40:_run_icepll_argv",
+            "yowasp-icebram = yowasp_nextpnr_ice40:_run_icebram_argv",
+            "yowasp-icemulti = yowasp_nextpnr_ice40:_run_icemulti_argv",
+            "yowasp-icepack = yowasp_nextpnr_ice40:_run_icepack_argv",
+            "yowasp-iceunpack = yowasp_nextpnr_ice40:_run_iceunpack_argv",
+            "yowasp-nextpnr-ice40 = yowasp_nextpnr_ice40:_run_nextpnr_ice40_argv",
         ],
-        packages=["yowasp_nextpnr_ice40"],
-        package_data={"yowasp_nextpnr_ice40": [
-            "*.wasm",
-            "share/ice40/chipdb-*.bin"
-        ]},
-        entry_points={
-            "console_scripts": [
-                "yowasp-icepll = yowasp_nextpnr_ice40:_run_icepll_argv",
-                "yowasp-icebram = yowasp_nextpnr_ice40:_run_icebram_argv",
-                "yowasp-icemulti = yowasp_nextpnr_ice40:_run_icemulti_argv",
-                "yowasp-icepack = yowasp_nextpnr_ice40:_run_icepack_argv",
-                "yowasp-iceunpack = yowasp_nextpnr_ice40:_run_iceunpack_argv",
-                "yowasp-nextpnr-ice40 = yowasp_nextpnr_ice40:_run_nextpnr_ice40_argv",
-            ],
-        },
-    )
-else:
-    setup_info = dict(
-        name="yowasp-nextpnr-ice40-{}".format(os.environ["ALIAS"]),
-        version=version(),
-        long_description="Transitional dummy package that depends on yowasp-nextpnr-ice40.",
-        long_description_content_type="text/markdown",
-        install_requires=[
-            "yowasp-nextpnr-ice40=={}".format(version()),
-        ]
-    )
+    },
+)
 
 
 setup(
