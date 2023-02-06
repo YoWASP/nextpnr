@@ -28,9 +28,7 @@ setup_info = dict(
     name="yowasp-nextpnr-nexus",
     version=version(),
     install_requires=[
-        "importlib_resources; python_version<'3.9'",
-        "appdirs~=1.4",
-        "wasmtime>=0.30,<2.0"
+        "yowasp-runtime~=1.1"
     ],
     packages=["yowasp_nextpnr_nexus"],
     package_data={

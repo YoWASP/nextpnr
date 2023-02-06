@@ -1,6 +1,3 @@
-import os
-import subprocess
-import sys
 from setuptools import setup, find_packages
 from setuptools_scm.git import parse as parse_git
 import importlib.metadata
@@ -31,9 +28,7 @@ setup_info = dict(
     name="yowasp-nextpnr-gowin",
     version=version(),
     install_requires=[
-        "importlib_resources; python_version<'3.9'",
-        "appdirs~=1.4",
-        "wasmtime>=0.30,<2.0",
+        "yowasp-runtime~=1.1",
         "Apycula=={}".format(importlib.metadata.version("apycula"))
     ],
     packages=["yowasp_nextpnr_gowin"],

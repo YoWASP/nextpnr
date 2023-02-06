@@ -30,9 +30,7 @@ setup_info = dict(
     long_description=long_description(),
     long_description_content_type="text/markdown",
     install_requires=[
-        "importlib_resources; python_version<'3.9'",
-        "appdirs~=1.4",
-        "wasmtime>=0.30,<2.0"
+        "yowasp-runtime~=1.1"
     ],
     packages=["yowasp_nextpnr_ice40"],
     package_data={"yowasp_nextpnr_ice40": [
