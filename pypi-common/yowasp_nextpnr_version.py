@@ -12,7 +12,7 @@ def version():
         version += f".{upstream_git.distance}"
     version += f".post{package_git.distance}"
     if not upstream_git.exact: # snapshot
-        version += f".dev"
+        version += f".dev0"
     if upstream_git.dirty or package_git.dirty:
         version += f"+dirty"
     return version
