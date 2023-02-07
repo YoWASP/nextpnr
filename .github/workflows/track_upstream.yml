@@ -1,9 +1,10 @@
 on:
   schedule:
     - cron: '0 0 * * *'
-name: Track upstream commits
+  workflow_dispatch:
+name: Track upstream activity
 jobs:
-  track_upstream:
+  track_commits:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source code
@@ -22,3 +23,32 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update dependencies.
+  track_releases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.PUSH_TOKEN }}
+      - name: Check out new upstream tag
+        id: checkout-tag
+        run: |
+          for tag in $(git -C nextpnr-src tag -l 'nextpnr-*' | sort -rV); do
+            ref=$(git -C nextpnr-src rev-parse $tag)
+            branch=develop-${tag/nextpnr-/}
+            if ! git rev-parse -q --verify remotes/origin/${branch} >/dev/null; then
+              echo "New branch ${branch} with nextpnr-src ${ref}"
+              git -C nextpnr-src checkout ${ref}
+              echo "version=${tag/nextpnr-/}" >> $GITHUB_OUTPUT
+              break
+            fi; 
+          done
+      - name: Push new branch
+        uses: stefanzweifel/git-auto-commit-action@v4
+        if: steps.checkout-tag.outputs.version
+        with:
+          commit_message: "[autorelease] nextpnr ${{ steps.checkout-tag.outputs.version }}."
+          branch: develop-${{ steps.checkout-tag.outputs.version }}
+          create_branch: true
