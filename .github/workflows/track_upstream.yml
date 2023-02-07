@@ -13,12 +13,16 @@ jobs:
           fetch-depth: 0
           submodules: true
           token: ${{ secrets.PUSH_TOKEN }}
+      - name: Install dependencies
+        run: |
+          pip install packaging
       - name: Update upstream code
         run: |
           git -C icestorm-src pull --ff-only origin master
           git -C prjtrellis-src pull --ff-only origin master
           git -C prjoxide-src pull --ff-only origin master
           git -C nextpnr-src pull --ff-only origin master
+          python -c 'import urllib.request, json, packaging.version; print("Apycula==" + max(json.load(urllib.request.urlopen("https://pypi.org/pypi/Apycula/json"))["releases"], key=packaging.version.Version))' >apycula-meta/requirements.txt
       - name: Push updated code
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

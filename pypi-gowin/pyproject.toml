@@ -27,3 +27,6 @@ yowasp_nextpnr_gowin = [
 	"*.wasm",
 	"share/gowin/chipdb-*.bin",
 ]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["dependencies.txt", "dependencies-apycula.txt"]}
