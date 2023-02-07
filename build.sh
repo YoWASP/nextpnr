@@ -91,7 +91,7 @@ cmake -B nextpnr-bba-build -S nextpnr-src/bba
 cmake --build nextpnr-bba-build
 
 ${PYTHON} -m venv apycula-prefix
-./apycula-prefix/bin/pip install Apycula wheel setuptools setuptools_scm
+./apycula-prefix/bin/pip install Apycula==0.6.1 wheel setuptools setuptools_scm
 
 mkdir -p nextpnr-build
 cmake -B nextpnr-build -S nextpnr-src \
