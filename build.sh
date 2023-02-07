@@ -106,7 +106,7 @@ cmake -B nextpnr-build -S nextpnr-src \
   -DBUILD_PYTHON=OFF \
   -DEXTERNAL_CHIPDB=ON \
   -DEXTERNAL_CHIPDB_ROOT=/share \
-  -DARCH="ice40;ecp5;nexus;gowin" \
+  -DARCH="ice40;ecp5;nexus" \
   -DICESTORM_INSTALL_PREFIX=$(pwd)/icestorm-prefix \
   -DTRELLIS_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
   -DOXIDE_INSTALL_PREFIX=$(pwd)/prjoxide-prefix \
