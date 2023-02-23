@@ -4,17 +4,17 @@ export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
 
 PYTHON=$(which ${PYTHON:-python})
 
-WASI_SDK=wasi-sdk-11.0
-WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-11/wasi-sdk-11.0-linux.tar.gz
+WASI_SDK=wasi-sdk-19.0
+WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-19/wasi-sdk-19.0-linux.tar.gz
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 WASI_SDK_PATH=$(pwd)/${WASI_SDK}
 
-BOOST=boost_1_76_0
-BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz
+BOOST=boost_1_81_0
+BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz
 if ! [ -d ${BOOST} ]; then curl -L ${BOOST_URL} | tar xzf -; fi
 
-EIGEN=eigen-3.3.9
-EIGEN_URL=https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz
+EIGEN=eigen-3.4.0
+EIGEN_URL=https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
 if ! [ -d ${EIGEN} ]; then curl -L ${EIGEN_URL} | tar xzf -; fi
 
 cat >Toolchain-WASI.cmake <<END
@@ -34,7 +34,7 @@ set(CMAKE_RANLIB ${WASI_SDK_PATH}/bin/ranlib CACHE STRING "wasienv build")
 
 set(CMAKE_C_FLAGS "--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot")
 set(CMAKE_CXX_FLAGS "--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot")
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-threads -Wl,--strip-all" CACHE STRING "wasienv build")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--strip-all" CACHE STRING "wasienv build")
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
@@ -46,7 +46,7 @@ if ! [ -f ${BOOST}/tools/build/src/engine/b2 ]; then
   (cd ${BOOST}/tools/build/src/engine && ./build.sh);
 fi
 cat >${BOOST}/project-config.jam <<END
-using clang : : ccache clang++ --sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -D_WASI_EMULATED_MMAN -DBOOST_NO_EXCEPTIONS -DBOOST_SP_NO_ATOMIC_ACCESS -DBOOST_AC_DISABLE_THREADS -DBOOST_NO_CXX11_HDR_MUTEX -DBOOST_HAS_UNISTD_H ;
+using clang : : ccache clang++ --sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -D_WASI_EMULATED_MMAN -DBOOST_NO_EXCEPTIONS -DBOOST_NO_CXX11_HDR_MUTEX ;
 project : default-build <toolset>clang ;
 
 libraries = --with-program_options --with-iostreams --with-filesystem --with-system ;
@@ -75,7 +75,7 @@ cmake --build prjtrellis-build
 
 cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
   -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
-  -DPYTHON_EXECUTABLE=${PYTHON} 
+  -DPYTHON_EXECUTABLE=${PYTHON}
 make -C libtrellis-build install
 
 cargo build --target-dir prjoxide-build \
