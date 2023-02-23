@@ -17,6 +17,23 @@ EIGEN=eigen-3.4.0
 EIGEN_URL=https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
 if ! [ -d ${EIGEN} ]; then curl -L ${EIGEN_URL} | tar xzf -; fi
 
+# Threading requires pre-release wasi-sdk
+WASI_TARGET="wasm32-wasi"
+WASI_SYSROOT="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot"
+WASI_CFLAGS="-flto"
+WASI_LDFLAGS="-flto -Wl,--strip-all"
+BOOST_THREADING="single"
+BOOST_ADD_CXXFLAGS="-DBOOST_NO_CXX11_HDR_MUTEX"
+BOOST_ADD_LIBRARIES=""
+if [ ${THREADS:-0} -ne 0 ]; then
+  WASI_TARGET="${WASI_TARGET}-threads"
+  WASI_CFLAGS="${WASI_CFLAGS} -pthread"
+  WASI_LDFLAGS="${WASI_LDFLAGS} -Wl,--import-memory,--export-memory,--max-memory=4294967296"
+  BOOST_THREADING="multi"
+  BOOST_ADD_CXXFLAGS=""
+  BOOST_ADD_LIBRARIES="--with-thread"
+fi
+
 cat >Toolchain-WASI.cmake <<END
 cmake_minimum_required(VERSION 3.4.0)
 
@@ -32,9 +49,11 @@ set(CMAKE_LINKER ${WASI_SDK_PATH}/bin/wasm-ld CACHE STRING "wasienv build")
 set(CMAKE_AR ${WASI_SDK_PATH}/bin/ar CACHE STRING "wasienv build")
 set(CMAKE_RANLIB ${WASI_SDK_PATH}/bin/ranlib CACHE STRING "wasienv build")
 
-set(CMAKE_C_FLAGS "--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot")
-set(CMAKE_CXX_FLAGS "--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot")
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--strip-all" CACHE STRING "wasienv build")
+set(CMAKE_C_COMPILER_TARGET ${WASI_TARGET})
+set(CMAKE_CXX_COMPILER_TARGET ${WASI_TARGET})
+set(CMAKE_C_FLAGS "${WASI_SYSROOT} ${WASI_CFLAGS}" CACHE STRING "wasienv build")
+set(CMAKE_CXX_FLAGS "${WASI_SYSROOT} ${WASI_CFLAGS}" CACHE STRING "wasienv build")
+set(CMAKE_EXE_LINKER_FLAGS "${WASI_LDFLAGS}" CACHE STRING "wasienv build")
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
@@ -46,20 +65,20 @@ if ! [ -f ${BOOST}/tools/build/src/engine/b2 ]; then
   (cd ${BOOST}/tools/build/src/engine && ./build.sh);
 fi
 cat >${BOOST}/project-config.jam <<END
-using clang : : ccache clang++ --sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -D_WASI_EMULATED_MMAN -DBOOST_NO_EXCEPTIONS -DBOOST_NO_CXX11_HDR_MUTEX ;
+using clang : : ccache clang++ --target=${WASI_TARGET} ${WASI_SYSROOT} ${WASI_CFLAGS} -D_WASI_EMULATED_MMAN -DBOOST_NO_EXCEPTIONS ${BOOST_ADD_CXXFLAGS} ;
 project : default-build <toolset>clang ;
 
-libraries = --with-program_options --with-iostreams --with-filesystem --with-system ;
+libraries = --with-program_options --with-iostreams --with-filesystem --with-system ${BOOST_ADD_LIBRARIES} ;
 END
-(cd ${BOOST} && PATH=${WASI_SDK_PATH}/bin:$PATH ./tools/build/src/engine/b2 threading=single link=static)
+(cd ${BOOST} && PATH=${WASI_SDK_PATH}/bin:$PATH ./tools/build/src/engine/b2 threading=${BOOST_THREADING} link=static)
 
 cmake -B eigen-build -S ${EIGEN} -DCMAKE_INSTALL_PREFIX=$(pwd)/eigen-prefix
 make -C eigen-build install
 
 make -C icestorm-src EXE=".wasm" \
   CXX="ccache ${WASI_SDK_PATH}/bin/clang++" \
-  CXXFLAGS="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -fno-exceptions -flto" \
-  LDFLAGS="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot -fno-exceptions -flto -Wl,--strip-all" \
+  CXXFLAGS="--target=${WASI_TARGET} ${WASI_SYSROOT} ${WASI_CFLAGS} -fno-exceptions" \
+  LDFLAGS="--target=${WASI_TARGET} ${WASI_SYSROOT} ${WASI_LDFLAGS}" \
   SUBDIRS="icebox icepack icemulti icepll icebram" \
   PREFIX="" DESTDIR=$(pwd)/icestorm-prefix \
   install
@@ -83,6 +102,8 @@ cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
   -DBUILD_ECPMULTI=OFF
 make -C libtrellis-build install
 
+# Rustc doesn't yet implement wasm32-wasi-threads; see:
+# https://github.com/rust-lang/compiler-team/issues/574
 cargo build --target-dir prjoxide-build \
   --manifest-path prjoxide-src/libprjoxide/prjoxide/Cargo.toml \
   --target wasm32-wasi \
