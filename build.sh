@@ -75,7 +75,12 @@ cmake --build prjtrellis-build
 
 cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
   -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
-  -DPYTHON_EXECUTABLE=${PYTHON}
+  -DPYTHON_EXECUTABLE=${PYTHON} \
+  -DBUILD_ECPBRAM=OFF \
+  -DBUILD_ECPPACK=OFF \
+  -DBUILD_ECPUNPACK=OFF \
+  -DBUILD_ECPPLL=OFF \
+  -DBUILD_ECPMULTI=OFF
 make -C libtrellis-build install
 
 cargo build --target-dir prjoxide-build \
