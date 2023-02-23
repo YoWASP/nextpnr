@@ -19,5 +19,5 @@ cp -r prjtrellis-src/database/ECP5 \
    pypi-ecp5/yowasp_nextpnr_ecp5/share/trellis/database
 
 cd pypi-ecp5
-rm -rf build && ${PYTHON} setup.py bdist_wheel
+rm -rf build && ${PYTHON} -m build -w
 sha256sum dist/*.whl

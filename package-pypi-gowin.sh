@@ -10,5 +10,5 @@ cp nextpnr-build/gowin/chipdb/*.bin \
    pypi-gowin/yowasp_nextpnr_gowin/share/gowin
 
 cd pypi-gowin
-rm -rf build && ${PYTHON} setup.py bdist_wheel
+rm -rf build && ${PYTHON} -m build -w
 sha256sum dist/*.whl

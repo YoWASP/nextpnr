@@ -11,5 +11,5 @@ cp nextpnr-build/nexus/chipdb/*.bin \
    pypi-nexus/yowasp_nextpnr_nexus/share/nexus
 
 cd pypi-nexus
-rm -rf build && ${PYTHON} setup.py bdist_wheel
+rm -rf build && ${PYTHON} -m build -w
 sha256sum dist/*.whl

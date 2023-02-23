@@ -14,5 +14,5 @@ cp nextpnr-build/ice40/chipdb/*.bin \
    pypi-ice40/yowasp_nextpnr_ice40/share/ice40
 
 cd pypi-ice40
-rm -rf build && ${PYTHON} setup.py bdist_wheel
+rm -rf build && ${PYTHON} -m build -w
 sha256sum dist/*.whl
