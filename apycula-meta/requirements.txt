@@ -1,1 +1,1 @@
-Apycula==0.8.1
+Apycula==0.8.2
