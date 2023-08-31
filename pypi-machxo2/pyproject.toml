@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools~=67.0", "setuptools_scm~=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+
+name = "yowasp-nextpnr-machxo2"
+description = "nextpnr-machxo2 FPGA place and route tool"
+readme = "README.md"
+authors = [{name = "Catherine", email = "whitequark@whitequark.org"}]
+license = {text = "ISC"}
+classifiers = [
+	"License :: OSI Approved :: ISC License (ISCL)"
+]
+
+dependencies = [
+	"yowasp-runtime~=1.1"
+]
+
+[project.scripts]
+# If two packages install scripts under the same name, the first package that is removed also
+# removes the script launcher. This is undesirable, and to resolve the conflict with
+# yowasp-nextpnr-ecp5, the scripts in yowasp-nextpnr-machxo2 are renamed. 
+yowasp-xo2pll = "yowasp_nextpnr_machxo2:_run_ecppll_argv"
+yowasp-xo2bram = "yowasp_nextpnr_machxo2:_run_ecpbram_argv"
+yowasp-xo2multi = "yowasp_nextpnr_machxo2:_run_ecpmulti_argv"
+yowasp-xo2pack = "yowasp_nextpnr_machxo2:_run_ecppack_argv"
+yowasp-xo2unpack = "yowasp_nextpnr_machxo2:_run_ecpunpack_argv"
+yowasp-nextpnr-machxo2 = "yowasp_nextpnr_machxo2:_run_nextpnr_machxo2_argv"
+
+[project.urls]
+"Homepage" = "https://yowasp.org/"
+"Source Code" = "https://github.com/YoWASP/nextpnr"
+"Bug Tracker" = "https://github.com/YoWASP/nextpnr/issues"
+
+[tool.setuptools.package-data]
+yowasp_nextpnr_machxo2 = [            
+	"*.wasm",
+	"share/trellis/database/devices.json",
+	"share/trellis/database/MachXO2/tiledata/**/*",
+	"share/trellis/database/MachXO2/timing/**/*",
+	"share/trellis/database/MachXO2/LCMXO2*/*",
+	"share/machxo2/chipdb-*.bin"
+]

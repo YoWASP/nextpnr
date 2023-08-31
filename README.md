@@ -6,8 +6,9 @@ The YoWASP nextpnr suite of packages provides [nextpnr][] and related tools for 
 The supported FPGA families are:
   * Lattice iCE40 (via [Project IceStorm][icestorm]);
   * Lattice ECP5 (via [Project Trellis][trellis]);
-  * Lattice Nexus (via [Project Oxide][oxide]);
-  * Gowin GW1N (via [Project Apicula][apicula]).
+  * Lattice MachXO2 (via [Project Trellis][trellis]; **experimental**);
+  * Lattice Nexus (via [Project Oxide][oxide]; **experimental**);
+  * Gowin GW1N (via [Project Apicula][apicula]; **experimental**).
 
 [nextpnr]: https://github.com/YosysHQ/nextpnr/
 [webassembly]: https://webassembly.org/
@@ -16,6 +17,12 @@ The supported FPGA families are:
 [trellis]: https://github.com/YosysHQ/prjtrellis/
 [oxide]: https://github.com/gatecat/prjoxide
 [apicula]: https://github.com/YosysHQ/apicula
+
+
+Notes
+-----
+
+For technical reasons, the `ecppack`, `ecpunpack`, `ecpbram`, `ecppll`, and `ecpmulti` tools from the MachXO2 toolchain shipped in the `yowasp-nextpnr-machxo2` PyPI package are installed under the names `yowasp-xo2pack`, `yowasp-xo2unpack`, `yowasp-xo2bram`, `yowasp-xo2pll`, and `yowasp-xo2multi` respectively. These commands run bit-for-bit identical code as their `yowasp-ecp*` prefixed brethren from the `yowasp-nextpnr-ecp5` PyPI package of the same version.
 
 
 Versioning

@@ -70,6 +70,24 @@ jobs:
           yowasp-ecpunpack --help || true
           yowasp-nextpnr-ecp5 --help
           yowasp-nextpnr-ecp5 --um5g-25k --package CABGA381 --test
+      - name: Build MachXO2 binary wheels
+        run: |
+          ./package-pypi-machxo2.sh
+      - name: Upload MachXO2 binary wheel artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheel
+          path: pypi-machxo2/dist/
+      - name: Test MachXO2 binary wheels
+        run: |
+          pip install pypi-machxo2/dist/*.whl
+          yowasp-xo2pll --help || true
+          yowasp-xo2bram --help
+          yowasp-xo2multi --help || true
+          yowasp-xo2pack --help || true
+          yowasp-xo2unpack --help || true
+          yowasp-nextpnr-machxo2 --help
+          yowasp-nextpnr-machxo2 --device LCMXO2-1200HC-4SG32C --test
       - name: Build Nexus binary wheels
         run: |
           ./package-pypi-nexus.sh

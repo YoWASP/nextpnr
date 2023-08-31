@@ -6,3 +6,5 @@
 /*-build
 /*-prefix
 /Toolchain-WASI.cmake
+
+.venv*/
