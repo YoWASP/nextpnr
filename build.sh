@@ -102,11 +102,9 @@ cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
   -DBUILD_ECPMULTI=OFF
 make -C libtrellis-build install
 
-# Rustc doesn't yet implement wasm32-wasi-threads; see:
-# https://github.com/rust-lang/compiler-team/issues/574
 cargo build --target-dir prjoxide-build \
   --manifest-path prjoxide-src/libprjoxide/prjoxide/Cargo.toml \
-  --target wasm32-wasi \
+  --target wasm32-wasi-preview1-threads \
   --release
 
 cargo install --target-dir prjoxide-build \
