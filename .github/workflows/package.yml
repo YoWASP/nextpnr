@@ -17,7 +17,7 @@ jobs:
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@nightly
         with:
-          targets: wasm32-wasi-preview1-threads
+          targets: wasm32-wasi
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip build
