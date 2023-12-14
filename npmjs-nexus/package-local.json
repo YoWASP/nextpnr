@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "transpile": [
+            "../prjoxide-build/wasm32-wasi/release/prjoxide.wasm",
+            "../nextpnr-build/nextpnr-nexus.wasm"
+        ]
+    }
+}

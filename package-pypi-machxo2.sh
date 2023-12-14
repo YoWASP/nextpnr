@@ -2,6 +2,8 @@
 
 PYTHON=${PYTHON:-python}
 
+cd $(dirname $0)
+
 mkdir -p pypi-machxo2/yowasp_nextpnr_machxo2/bin/
 cp prjtrellis-build/ecppll.wasm \
    prjtrellis-build/ecpbram.wasm \
@@ -14,7 +16,7 @@ mkdir -p pypi-machxo2/yowasp_nextpnr_machxo2/share/machxo2
 cp nextpnr-build/machxo2/chipdb/*.bin \
    pypi-machxo2/yowasp_nextpnr_machxo2/share/machxo2
 mkdir -p pypi-machxo2/yowasp_nextpnr_machxo2/share/trellis/database
-cp -r prjtrellis-src/database/ECP5 \
+cp -r prjtrellis-src/database/MachXO* \
    prjtrellis-src/database/devices.json \
    pypi-machxo2/yowasp_nextpnr_machxo2/share/trellis/database
 

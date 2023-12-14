@@ -26,108 +26,113 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/ccache
-          key: ${{ runner.os }}-
+          key: nextpnr-${{ hashFiles('nextpnr-src', 'icestorm-src', 'prjtrellis-src', 'prjoxide-src', 'apycula-meta', 'build.sh') }}
+          restore-keys: |
+            nextpnr-${{ hashFiles('nextpnr-src', 'icestorm-src', 'prjtrellis-src', 'prjoxide-src', 'apycula-meta', 'build.sh') }}
+            nextpnr-
       - name: Set up ccache
         run: |
           ccache --max-size=2G -z
       - name: Build WASM binaries
         run: |
           ./build.sh
-      - name: Build iCE40 binary wheels
+      - name: Build Python artifacts
         run: |
           ./package-pypi-ice40.sh
-      - name: Upload iCE40 binary wheel artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheel
-          path: pypi-ice40/dist/
-      - name: Test iCE40 binary wheels
-        run: |
-          pip install pypi-ice40/dist/*.whl
-          yowasp-icepll -h || true
-          yowasp-icebram -h || true
-          yowasp-icemulti -h || true
-          yowasp-icepack -h || true
-          yowasp-iceunpack -h || true
-          yowasp-nextpnr-ice40 --help
-          yowasp-nextpnr-ice40 --hx8k --package ct256 --test
-          yowasp-nextpnr-ice40 --up5k --package sg48 --test
-      - name: Build ECP5 binary wheels
-        run: |
           ./package-pypi-ecp5.sh
-      - name: Upload ECP5 binary wheel artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheel
-          path: pypi-ecp5/dist/
-      - name: Test ECP5 binary wheels
-        run: |
-          pip install pypi-ecp5/dist/*.whl
-          yowasp-ecppll --help || true
-          yowasp-ecpbram --help
-          yowasp-ecpmulti --help || true
-          yowasp-ecppack --help || true
-          yowasp-ecpunpack --help || true
-          yowasp-nextpnr-ecp5 --help
-          yowasp-nextpnr-ecp5 --um5g-25k --package CABGA381 --test
-      - name: Build MachXO2 binary wheels
-        run: |
           ./package-pypi-machxo2.sh
-      - name: Upload MachXO2 binary wheel artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheel
-          path: pypi-machxo2/dist/
-      - name: Test MachXO2 binary wheels
-        run: |
-          pip install pypi-machxo2/dist/*.whl
-          yowasp-xo2pll --help || true
-          yowasp-xo2bram --help
-          yowasp-xo2multi --help || true
-          yowasp-xo2pack --help || true
-          yowasp-xo2unpack --help || true
-          yowasp-nextpnr-machxo2 --help
-          yowasp-nextpnr-machxo2 --device LCMXO2-1200HC-4SG32C --test
-      - name: Build Nexus binary wheels
-        run: |
           ./package-pypi-nexus.sh
-      - name: Upload Nexus binary wheel artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheel
-          path: pypi-nexus/dist/
-      - name: Test Nexus binary wheels
-        run: |
-          pip install pypi-nexus/dist/*.whl
-          yowasp-prjoxide --help
-          yowasp-nextpnr-nexus --help
-          yowasp-nextpnr-nexus --device LIFCL-40-9BG400CES --test
-      - name: Build Gowin binary wheels
-        run: |
           ./package-pypi-gowin.sh
-      - name: Upload Gowin binary wheel artifact
+      - name: Upload Python artifact
         uses: actions/upload-artifact@v3
         with:
-          name: wheel
-          path: pypi-gowin/dist/
-      - name: Test Gowin binary wheels
+          name: dist-pypi
+          path: pypi-*/dist/
+      - name: Build JavaScript artifacts
         run: |
-          pip install pypi-gowin/dist/*.whl
-          yowasp-nextpnr-gowin --help
-          yowasp-nextpnr-gowin --device GW1N-LV1QN48C6/I5 --test
+          ./package-npmjs-ice40.sh
+          ./package-npmjs-ecp5.sh
+          ./package-npmjs-machxo2.sh
+          ./package-npmjs-nexus.sh
+      - name: Upload JavaScript artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-npmjs
+          path: npmjs-*/dist/
       - name: Print ccache statistics
         run: |
           ccache -s
-  publish:
+  test-python:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Download Python artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-pypi
+    - name: Test iCE40 Python artifact
+      run: |
+        pip install pypi-ice40/dist/*.whl
+        yowasp-icepll -h || true
+        yowasp-icebram -h || true
+        yowasp-icemulti -h || true
+        yowasp-icepack -h || true
+        yowasp-iceunpack -h || true
+        yowasp-nextpnr-ice40 --help
+        yowasp-nextpnr-ice40 --hx8k --package ct256 --test
+        yowasp-nextpnr-ice40 --up5k --package sg48 --test
+    - name: Test ECP5 Python artifact
+      run: |
+        pip install pypi-ecp5/dist/*.whl
+        yowasp-ecppll --help || true
+        yowasp-ecpbram --help
+        yowasp-ecpmulti --help || true
+        yowasp-ecppack --help || true
+        yowasp-ecpunpack --help || true
+        yowasp-nextpnr-ecp5 --help
+        yowasp-nextpnr-ecp5 --um5g-25k --package CABGA381 --test
+    - name: Test MachXO2 Python artifact
+      run: |
+        pip install pypi-machxo2/dist/*.whl
+        yowasp-xo2pll --help || true
+        yowasp-xo2bram --help
+        yowasp-xo2multi --help || true
+        yowasp-xo2pack --help || true
+        yowasp-xo2unpack --help || true
+        yowasp-nextpnr-machxo2 --help
+        yowasp-nextpnr-machxo2 --device LCMXO2-1200HC-4SG32C --test
+    - name: Test Nexus Python artifact
+      run: |
+        pip install pypi-nexus/dist/*.whl
+        yowasp-prjoxide --help
+        yowasp-nextpnr-nexus --help
+        yowasp-nextpnr-nexus --device LIFCL-40-9BG400CES --test
+    - name: Test Gowin Python artifact
+      run: |
+        pip install pypi-gowin/dist/*.whl
+        yowasp-nextpnr-gowin --help
+        yowasp-nextpnr-gowin --device GW1N-LV1QN48C6/I5 --test
+  check: # group all `test (*)` workflows into one for the required status check
+    needs: [test-python]
+    if: always() && !contains(needs.*.result, 'cancelled')
+    runs-on: ubuntu-latest
+    steps:
+      - run: ${{ contains(needs.*.result, 'failure') && 'false' || 'true' }}
+  publish-python:
     needs: build
     runs-on: ubuntu-latest
     environment: publish
     permissions:
       id-token: write
+    if: "!contains(github.event.head_commit.message, 'skip py')"
     steps:
     - uses: actions/download-artifact@v3
       with:
-        name: wheel
+        name: dist-pypi
         path: dist/
     - name: Publish wheels to Test PyPI
       if: "github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/develop')"
@@ -137,6 +142,32 @@ jobs:
     - name: Publish wheels to PyPI
       if: "github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/release')"
       uses: pypa/gh-action-pypi-publish@release/v1
+  publish-javascript:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: publish
+    permissions:
+      id-token: write
+    if: "!contains(github.event.head_commit.message, 'skip js')"
+    steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+    - name: Download JavaScript artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-npmjs
+        path: dist/
+    - name: Publish package to NPM (dry run)
+      if: "github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/develop')"
+      run: npm publish --access public $(find dist -name *.tgz -printf 'file:%p ') --dry-run
+    - name: Publish package to NPM
+      if: "github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/release')"
+      run: npm publish --access public $(find dist -name *.tgz -printf 'file:%p ')
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NPM_CONFIG_PROVENANCE: true
   release:
     needs: build
     runs-on: ubuntu-latest

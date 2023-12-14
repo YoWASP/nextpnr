@@ -2,6 +2,8 @@
 
 PYTHON=${PYTHON:-python}
 
+cd $(dirname $0)
+
 mkdir -p pypi-nexus/yowasp_nextpnr_nexus/bin/
 cp prjoxide-build/wasm32-wasi/release/prjoxide.wasm \
    nextpnr-build/nextpnr-nexus.wasm \

@@ -2,6 +2,8 @@
 
 PYTHON=${PYTHON:-python}
 
+cd $(dirname $0)
+
 mkdir -p pypi-ecp5/yowasp_nextpnr_ecp5/bin/
 cp prjtrellis-build/ecppll.wasm \
    prjtrellis-build/ecpbram.wasm \

@@ -4,8 +4,8 @@ export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
 
 PYTHON=$(which ${PYTHON:-python})
 
-WASI_SDK=wasi-sdk-19.0
-WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-19/wasi-sdk-19.0-linux.tar.gz
+WASI_SDK=wasi-sdk-20.0
+WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-20/wasi-sdk-20.0-linux.tar.gz
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 WASI_SDK_PATH=$(pwd)/${WASI_SDK}
 
@@ -17,7 +17,7 @@ EIGEN=eigen-3.4.0
 EIGEN_URL=https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
 if ! [ -d ${EIGEN} ]; then curl -L ${EIGEN_URL} | tar xzf -; fi
 
-# Threading requires pre-release wasi-sdk
+# Threading is currently experimental.
 WASI_TARGET="wasm32-wasi"
 WASI_SYSROOT="--sysroot ${WASI_SDK_PATH}/share/wasi-sysroot"
 WASI_CFLAGS="-flto"
