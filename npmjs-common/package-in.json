@@ -1,0 +1,41 @@
+{
+    "name": "@yowasp/nextpnr-__ARCH__",
+    "version": "__VERSION__",
+    "description": "nextpnr-__ARCH__ FPGA place and route tool",
+    "author": "Catherine <whitequark@whitequark.org>",
+    "license": "ISC",
+    "homepage": "https://yowasp.org/",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/YoWASP/nextpnr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/YoWASP/nextpnr/issues"
+    },
+    "type": "module",
+    "files": [
+        "lib/api.d.ts",
+        "gen/bundle-*.js",
+        "gen/resources-*.js",
+        "gen/*.wasm",
+        "gen/share/"
+    ],
+    "exports": {
+        "node": "./gen/bundle-node.js",
+        "browser": "./gen/bundle-browser.js",
+        "types": "./lib/api.d.ts"
+    },
+    "types": "./lib/api.d.ts",
+    "devDependencies": {
+        "@bytecodealliance/jco": "^0.14.1",
+        "@yowasp/runtime": "5.0.28",
+        "esbuild": "^0.19.8"
+    },
+    "scripts": {
+        "pack": "yowasp-pack-resources gen/resources-nextpnr-__ARCH__.js gen share",
+        "transpile": "jco new __FILENAME__ --wasi-command --output __BASENAME__ && jco transpile __BASENAME__ --instantiation async --no-typescript --no-namespaced-exports --map 'wasi:io/*=runtime#io' --map 'wasi:cli/*=runtime#cli' --map 'wasi:clocks/*=runtime#*' --map 'wasi:filesystem/*=runtime#fs' --map 'wasi:random/*=runtime#random' --out-dir gen/",
+        "build:node": "esbuild --bundle lib/api.js --outfile=gen/bundle-node.js --format=esm --platform=node",
+        "build:browser": "esbuild --bundle lib/api.js --outfile=gen/bundle-browser.js --format=esm --platform=browser",
+        "all": "npm run transpile && npm run pack && npm run build:node && npm run build:browser"
+    }
+}

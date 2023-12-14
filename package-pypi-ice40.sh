@@ -2,6 +2,8 @@
 
 PYTHON=${PYTHON:-python}
 
+cd $(dirname $0)
+
 mkdir -p pypi-ice40/yowasp_nextpnr_ice40/bin/
 cp icestorm-prefix/bin/icepll.wasm \
    icestorm-prefix/bin/icebram.wasm \

@@ -1,0 +1,11 @@
+{
+    "scripts": {
+        "transpile": [
+            "../icestorm-prefix/bin/icepll.wasm",
+            "../icestorm-prefix/bin/icebram.wasm",
+            "../icestorm-prefix/bin/icemulti.wasm",
+            "../icestorm-prefix/bin/icepack.wasm",
+            "../nextpnr-build/nextpnr-ice40.wasm"
+        ]
+    }
+}

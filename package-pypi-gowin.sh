@@ -2,6 +2,8 @@
 
 PYTHON=${PYTHON:-python}
 
+cd $(dirname $0)
+
 mkdir -p pypi-gowin/yowasp_nextpnr_gowin/bin/
 cp nextpnr-build/nextpnr-gowin.wasm \
    pypi-gowin/yowasp_nextpnr_gowin/
