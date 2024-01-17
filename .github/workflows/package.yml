@@ -169,7 +169,7 @@ jobs:
       run: for pkg in $(find dist -name '*.tgz'); do npm publish --access public file:$pkg --dry-run; done
     - name: Publish package to NPM
       if: "github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/release')"
-      run: for pkg in $(find dist -name '*.tgz'); do npm publish --access public file:$pkg; done
+      run: for pkg in $(find dist -name '*.tgz'); do npm publish --access public file:$pkg ${github.event.ref == 'refs/heads/release' && '--tag latest' || '--tag release'}; done
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         NPM_CONFIG_PROVENANCE: true
