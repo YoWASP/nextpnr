@@ -27,13 +27,13 @@
     "types": "./lib/api.d.ts",
     "devDependencies": {
         "@bytecodealliance/jco": "0.14.2",
-        "@yowasp/runtime": "6.0.34",
+        "@yowasp/runtime": "7.0.35",
         "esbuild": "^0.19.8"
     },
     "scripts": {
         "transpile": "jco new __FILENAME__ --wasi-command --output __BASENAME__ && jco transpile __BASENAME__ --instantiation async --no-typescript --no-namespaced-exports --map 'wasi:io/*=runtime#io' --map 'wasi:cli/*=runtime#cli' --map 'wasi:clocks/*=runtime#*' --map 'wasi:filesystem/*=runtime#fs' --map 'wasi:random/*=runtime#random' --out-dir gen/",
         "pack": "yowasp-pack-resources gen/resources-nextpnr-__ARCH__.js gen share",
-        "build": "esbuild --bundle lib/api.js --outfile=gen/bundle.js --format=esm --platform=node",
+        "build": "esbuild --bundle lib/api.js --outfile=gen/bundle.js --format=esm --platform=node --external:./resources-*.js",
         "all": "npm run transpile && npm run pack && npm run build"
     }
 }

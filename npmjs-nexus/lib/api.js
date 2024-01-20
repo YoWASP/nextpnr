@@ -4,12 +4,12 @@ import { instantiate as instantiateNextpnrNexus } from '../gen/nextpnr-nexus.js'
 
 export { Exit } from '@yowasp/runtime';
 
-const resourceFileURL = new URL('./resources-nextpnr-nexus.js', import.meta.url);
+const resources = () => import('./resources-nextpnr-nexus.js');
 
-const prjoxide = new Application(resourceFileURL, instantiatePrjoxide, 'yowasp-prjoxide');
+const prjoxide = new Application(resources, instantiatePrjoxide, 'yowasp-prjoxide');
 const runPrjoxide = prjoxide.run.bind(prjoxide);
 
-const nextpnrNexus = new Application(resourceFileURL, instantiateNextpnrNexus, 'yowasp-nextpnr-nexus');
+const nextpnrNexus = new Application(resources, instantiateNextpnrNexus, 'yowasp-nextpnr-nexus');
 const runNextpnrNexus = nextpnrNexus.run.bind(nextpnrNexus);
 
 export {

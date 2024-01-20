@@ -8,24 +8,24 @@ import { instantiate as instantiateNextpnrMachxo2 } from '../gen/nextpnr-machxo2
 
 export { Exit } from '@yowasp/runtime';
 
-const resourceFileURL = new URL('./resources-nextpnr-machxo2.js', import.meta.url);
+const resources = new URL(() => './resources-nextpnr-machxo2.js');
 
-const ecppll = new Application(resourceFileURL, instantiateEcppll, 'yowasp-ecppll');
+const ecppll = new Application(resources, instantiateEcppll, 'yowasp-ecppll');
 const runEcppll = ecppll.run.bind(ecppll);
 
-const ecpbram = new Application(resourceFileURL, instantiateEcpbram, 'yowasp-ecpbram');
+const ecpbram = new Application(resources, instantiateEcpbram, 'yowasp-ecpbram');
 const runEcpbram = ecpbram.run.bind(ecpbram);
 
-const ecpmulti = new Application(resourceFileURL, instantiateEcpmulti, 'yowasp-ecpmulti');
+const ecpmulti = new Application(resources, instantiateEcpmulti, 'yowasp-ecpmulti');
 const runEcpmulti = ecpmulti.run.bind(ecpmulti);
 
-const ecppack = new Application(resourceFileURL, instantiateEcppack, 'yowasp-ecppack');
+const ecppack = new Application(resources, instantiateEcppack, 'yowasp-ecppack');
 const runEcppack = ecppack.run.bind(ecppack);
 
-const ecpunpack = new Application(resourceFileURL, instantiateEcpunpack, 'yowasp-ecpunpack');
+const ecpunpack = new Application(resources, instantiateEcpunpack, 'yowasp-ecpunpack');
 const runEcpunpack = ecpunpack.run.bind(ecpunpack);
 
-const nextpnrMachxo2 = new Application(resourceFileURL, instantiateNextpnrMachxo2, 'yowasp-nextpnr-machxo2');
+const nextpnrMachxo2 = new Application(resources, instantiateNextpnrMachxo2, 'yowasp-nextpnr-machxo2');
 const runNextpnrMachxo2 = nextpnrMachxo2.run.bind(nextpnrMachxo2);
 
 export {

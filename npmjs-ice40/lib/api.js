@@ -7,24 +7,24 @@ import { instantiate as instantiateNextpnrIce40 } from '../gen/nextpnr-ice40.js'
 
 export { Exit } from '@yowasp/runtime';
 
-const resourceFileURL = new URL('./resources-nextpnr-ice40.js', import.meta.url);
+const resources = () => import('./resources-nextpnr-ice40.js');
 
-const icepll = new Application(resourceFileURL, instantiateIcepll, 'yowasp-icepll');
+const icepll = new Application(resources, instantiateIcepll, 'yowasp-icepll');
 const runIcepll = icepll.run.bind(icepll);
 
-const icebram = new Application(resourceFileURL, instantiateIcebram, 'yowasp-icebram');
+const icebram = new Application(resources, instantiateIcebram, 'yowasp-icebram');
 const runIcebram = icebram.run.bind(icebram);
 
-const icemulti = new Application(resourceFileURL, instantiateIcemulti, 'yowasp-icemulti');
+const icemulti = new Application(resources, instantiateIcemulti, 'yowasp-icemulti');
 const runIcemulti = icemulti.run.bind(icemulti);
 
-const icepack = new Application(resourceFileURL, instantiateIcepack, 'yowasp-icepack');
+const icepack = new Application(resources, instantiateIcepack, 'yowasp-icepack');
 const runIcepack = icepack.run.bind(icepack);
 
-const iceunpack = new Application(resourceFileURL, instantiateIcepack, 'yowasp-iceunpack');
+const iceunpack = new Application(resources, instantiateIcepack, 'yowasp-iceunpack');
 const runIceunpack = iceunpack.run.bind(iceunpack);
 
-const nextpnrIce40 = new Application(resourceFileURL, instantiateNextpnrIce40, 'yowasp-nextpnr-ice40');
+const nextpnrIce40 = new Application(resources, instantiateNextpnrIce40, 'yowasp-nextpnr-ice40');
 const runNextpnrIce40 = nextpnrIce40.run.bind(nextpnrIce40);
 
 export {
