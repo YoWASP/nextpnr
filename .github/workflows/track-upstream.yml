@@ -47,7 +47,7 @@ jobs:
               git -C nextpnr-src checkout ${ref}
               echo "version=${tag/nextpnr-/}" >> $GITHUB_OUTPUT
               break
-            fi; 
+            fi;
           done
       - name: Push new branch
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -56,3 +56,4 @@ jobs:
           commit_message: "[autorelease] nextpnr ${{ steps.checkout-tag.outputs.version }}."
           branch: develop-${{ steps.checkout-tag.outputs.version }}
           create_branch: true
+          skip_dirty_check: true
