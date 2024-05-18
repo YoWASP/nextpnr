@@ -8,7 +8,7 @@ import { instantiate as instantiateNextpnrMachxo2 } from '../gen/nextpnr-machxo2
 
 export { Exit } from '@yowasp/runtime';
 
-const resources = new URL(() => './resources-nextpnr-machxo2.js');
+const resources = () => import('./resources-nextpnr-machxo2.js');
 
 const ecppll = new Application(resources, instantiateEcppll, 'yowasp-ecppll');
 const runEcppll = ecppll.run.bind(ecppll);
