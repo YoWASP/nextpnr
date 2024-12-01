@@ -106,7 +106,7 @@ make -C libtrellis-build install
 # https://github.com/rust-lang/compiler-team/issues/574
 cargo build --target-dir prjoxide-build \
   --manifest-path prjoxide-src/libprjoxide/prjoxide/Cargo.toml \
-  --target wasm32-wasi \
+  --target wasm32-wasip1 \
   --release
 
 cargo install --target-dir prjoxide-build \
