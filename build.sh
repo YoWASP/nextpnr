@@ -35,7 +35,7 @@ if [ ${THREADS:-0} -ne 0 ]; then
 fi
 
 cat >Toolchain-WASI.cmake <<END
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.4...3.31)
 
 set(WASI TRUE)
 
@@ -70,7 +70,7 @@ project : default-build <toolset>clang ;
 
 libraries = --with-program_options --with-iostreams --with-filesystem --with-system ${BOOST_ADD_LIBRARIES} ;
 END
-(cd ${BOOST} && PATH=${WASI_SDK_PATH}/bin:$PATH ./tools/build/src/engine/b2 threading=${BOOST_THREADING} link=static)
+(cd ${BOOST} && PATH=${WASI_SDK_PATH}/bin:$PATH ./tools/build/src/engine/b2 threading=${BOOST_THREADING} link=static stage)
 
 cmake -B eigen-build -S ${EIGEN} -DCMAKE_INSTALL_PREFIX=$(pwd)/eigen-prefix
 make -C eigen-build install
@@ -86,6 +86,7 @@ cp icestorm-src/icefuzz/timings_*.txt $(pwd)/icestorm-prefix/share/icebox/
 
 cmake -B prjtrellis-build -S prjtrellis-src/libtrellis \
   -DCMAKE_TOOLCHAIN_FILE=../Toolchain-WASI.cmake \
+  -DCMAKE_PREFIX_PATH=$(pwd)/${BOOST}/stage/ \
   -DBOOST_ROOT=$(pwd)/${BOOST} \
   -DSTATIC_BUILD=ON \
   -DBUILD_SHARED=OFF \
@@ -94,7 +95,7 @@ cmake --build prjtrellis-build
 
 cmake -B libtrellis-build -S prjtrellis-src/libtrellis \
   -DCMAKE_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
-  -DPYTHON_EXECUTABLE=${PYTHON} \
+  -DPython3_EXECUTABLE=${PYTHON} \
   -DBUILD_ECPBRAM=OFF \
   -DBUILD_ECPPACK=OFF \
   -DBUILD_ECPUNPACK=OFF \
@@ -122,8 +123,9 @@ ${PYTHON} -m venv apycula-prefix
 mkdir -p nextpnr-build
 cmake -B nextpnr-build -S nextpnr-src \
   -DCMAKE_TOOLCHAIN_FILE=../Toolchain-WASI.cmake \
+  -DCMAKE_PREFIX_PATH=$(pwd)/${BOOST}/stage/ \
   -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-  -DPYTHON_EXECUTABLE=${PYTHON} \
+  -DPython3_EXECUTABLE=${PYTHON} \
   -DSTATIC_BUILD=ON \
   -DBOOST_ROOT=$(pwd)/${BOOST} \
   -DEigen3_DIR=$(pwd)/eigen-prefix/share/eigen3/cmake \
