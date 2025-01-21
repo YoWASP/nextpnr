@@ -13,7 +13,7 @@ cp prjtrellis-build/ecppll.wasm \
    nextpnr-build/nextpnr-machxo2.wasm \
    pypi-machxo2/yowasp_nextpnr_machxo2/
 mkdir -p pypi-machxo2/yowasp_nextpnr_machxo2/share/machxo2
-cp nextpnr-build/machxo2/chipdb/*.bin \
+cp -r nextpnr-build/share/machxo2/* \
    pypi-machxo2/yowasp_nextpnr_machxo2/share/machxo2
 mkdir -p pypi-machxo2/yowasp_nextpnr_machxo2/share/trellis/database
 cp -r prjtrellis-src/database/MachXO* \

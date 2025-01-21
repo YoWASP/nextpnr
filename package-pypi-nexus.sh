@@ -9,7 +9,7 @@ cp prjoxide-build/wasm32-wasip1/release/prjoxide.wasm \
    nextpnr-build/nextpnr-nexus.wasm \
    pypi-nexus/yowasp_nextpnr_nexus/
 mkdir -p pypi-nexus/yowasp_nextpnr_nexus/share/nexus
-cp nextpnr-build/nexus/chipdb/*.bin \
+cp -r nextpnr-build/share/nexus/* \
    pypi-nexus/yowasp_nextpnr_nexus/share/nexus
 
 cd pypi-nexus

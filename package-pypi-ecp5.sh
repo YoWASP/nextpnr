@@ -13,7 +13,7 @@ cp prjtrellis-build/ecppll.wasm \
    nextpnr-build/nextpnr-ecp5.wasm \
    pypi-ecp5/yowasp_nextpnr_ecp5/
 mkdir -p pypi-ecp5/yowasp_nextpnr_ecp5/share/ecp5
-cp nextpnr-build/ecp5/chipdb/*.bin \
+cp -r nextpnr-build/share/ecp5/* \
    pypi-ecp5/yowasp_nextpnr_ecp5/share/ecp5
 mkdir -p pypi-ecp5/yowasp_nextpnr_ecp5/share/trellis/database
 cp -r prjtrellis-src/database/ECP5 \

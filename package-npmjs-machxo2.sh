@@ -5,7 +5,7 @@ cd $(dirname $0)
 PYTHON=${PYTHON:-python}
 
 mkdir -p npmjs-machxo2/share/machxo2
-cp nextpnr-build/machxo2/chipdb/*.bin \
+cp -r nextpnr-build/share/machxo2/* \
    npmjs-machxo2/share/machxo2
 mkdir -p npmjs-machxo2/share/trellis/database
 cp -r prjtrellis-src/database/MachXO* \

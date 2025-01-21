@@ -5,7 +5,7 @@ cd $(dirname $0)
 PYTHON=${PYTHON:-python}
 
 mkdir -p npmjs-ice40/share/ice40
-cp nextpnr-build/ice40/chipdb/*.bin \
+cp -r nextpnr-build/share/ice40/* \
    npmjs-ice40/share/ice40
 
 cd npmjs-ice40

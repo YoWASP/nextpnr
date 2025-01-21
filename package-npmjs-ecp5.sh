@@ -5,7 +5,7 @@ cd $(dirname $0)
 PYTHON=${PYTHON:-python}
 
 mkdir -p npmjs-ecp5/share/ecp5
-cp nextpnr-build/ecp5/chipdb/*.bin \
+cp -r nextpnr-build/share/ecp5/* \
    npmjs-ecp5/share/ecp5
 mkdir -p npmjs-ecp5/share/trellis/database
 cp -r prjtrellis-src/database/ECP5 \

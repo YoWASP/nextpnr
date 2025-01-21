@@ -12,7 +12,7 @@ cp icestorm-prefix/bin/icepll.wasm \
    nextpnr-build/nextpnr-ice40.wasm \
    pypi-ice40/yowasp_nextpnr_ice40/
 mkdir -p pypi-ice40/yowasp_nextpnr_ice40/share/ice40
-cp nextpnr-build/ice40/chipdb/*.bin \
+cp -r nextpnr-build/share/ice40/* \
    pypi-ice40/yowasp_nextpnr_ice40/share/ice40
 
 cd pypi-ice40

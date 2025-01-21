@@ -5,7 +5,7 @@ cd $(dirname $0)
 PYTHON=${PYTHON:-python}
 
 mkdir -p npmjs-nexus/share/nexus
-cp nextpnr-build/nexus/chipdb/*.bin \
+cp -r nextpnr-build/share/nexus/* \
    npmjs-nexus/share/nexus
 
 cd npmjs-nexus
