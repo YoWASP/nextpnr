@@ -37,6 +37,8 @@ with open("package-in.json", "rt") as f:
 package_json["version"] = version
 package_json["name"] = package_json["name"].replace("__ARCH__", arch)
 package_json["description"] = package_json["description"].replace("__ARCH__", arch)
+if "devDependencies" in package_local:
+    package_json["devDependencies"] |= package_local["devDependencies"]
 package_json["scripts"]["pack"] = package_json["scripts"]["pack"].replace("__ARCH__", arch)
 transpile_commands = []
 for transpile_file in package_local["scripts"]["transpile"]:
@@ -44,5 +46,7 @@ for transpile_file in package_local["scripts"]["transpile"]:
         .replace("__FILENAME__", transpile_file)
         .replace("__BASENAME__", os.path.basename(transpile_file)))
 package_json["scripts"]["transpile"] = " && ".join(transpile_commands)
+if "build" in package_local["scripts"]:
+    package_json["scripts"]["build"] += " " + package_local["scripts"]["build"]
 with open("package.json", "wt") as f:
     json.dump(package_json, f, indent=2)

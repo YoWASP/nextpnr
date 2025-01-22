@@ -2,6 +2,10 @@
     "scripts": {
         "transpile": [
             "../nextpnr-build/nextpnr-himbaechel-gowin.wasm"
-        ]
+        ],
+        "build": "--external:pyodide"
+    },
+    "devDependencies": {
+        "pyodide": "0.27"
     }
 }

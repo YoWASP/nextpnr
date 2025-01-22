@@ -1,13 +1,24 @@
 import { Application } from '@yowasp/runtime';
+import { PythonApplication } from './pyodide.js';
 import { instantiate as instantiateNextpnrHimbaechelGowin } from '../gen/nextpnr-himbaechel-gowin.js';
 
 export { Exit } from '@yowasp/runtime';
 
 const resources = () => import('./resources-nextpnr-himbaechel-gowin.js');
 
-const runGowinPll = () => { throw new Error("unimplemented") };
-const runGowinPack = () => { throw new Error("unimplemented") };
-const runGowinUnpack = () => { throw new Error("unimplemented") };
+const executeApycula = (pyodide, argv0) => pyodide.runPython(`
+import sys; sys.path.append('/share/python')
+from apycula.${argv0} import main; main()
+`);
+
+const gowinPll = new PythonApplication(resources, executeApycula, 'gowin_pll');
+const runGowinPll = gowinPll.run.bind(gowinPll);
+
+const gowinPack = new PythonApplication(resources, executeApycula, 'gowin_pack');
+const runGowinPack = gowinPack.run.bind(gowinPack);
+
+const gowinUnpack = new PythonApplication(resources, executeApycula, 'gowin_unpack');
+const runGowinUnpack = gowinUnpack.run.bind(gowinUnpack);
 
 const nextpnrHimbaechelGowin = new Application(resources, instantiateNextpnrHimbaechelGowin, 'yowasp-nextpnr-himbaechel-gowin');
 const runNextpnrHimbaechelGowin = nextpnrHimbaechelGowin.run.bind(nextpnrHimbaechelGowin);
