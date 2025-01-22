@@ -4,14 +4,6 @@ cd $(dirname $0)
 
 PYTHON=${PYTHON:-python}
 
-mkdir -p npmjs-machxo2/share/machxo2
-cp -r nextpnr-build/share/machxo2/* \
-   npmjs-machxo2/share/machxo2
-mkdir -p npmjs-machxo2/share/trellis/database
-cp -r prjtrellis-src/database/MachXO* \
-   prjtrellis-src/database/devices.json \
-   npmjs-machxo2/share/trellis/database
-
 cd npmjs-machxo2
 ${PYTHON} prepare.py machxo2
 npm install

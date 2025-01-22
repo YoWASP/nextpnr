@@ -3,5 +3,3 @@ __pycache__/
 /.eggs
 /build
 /dist
-
-/yowasp_*/share

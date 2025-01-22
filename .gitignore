@@ -1,5 +1,4 @@
 /wasi-sdk-*
-*.wasm
 
 /boost-*
 /eigen-*
