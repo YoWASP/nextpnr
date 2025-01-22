@@ -46,6 +46,7 @@ jobs:
           ./package-pypi-machxo2.sh
           ./package-pypi-nexus.sh
           ./package-pypi-gowin.sh
+          ./package-pypi-himbaechel-gowin.sh
       - name: Upload Python artifact
         uses: actions/upload-artifact@v4
         with:
@@ -119,6 +120,11 @@ jobs:
         pip install pypi-gowin/dist/*.whl
         yowasp-nextpnr-gowin --help
         yowasp-nextpnr-gowin --device GW1N-LV1QN48C6/I5 --test
+    - name: Test Himbächel Gowin Python artifact
+      run: |
+        pip install pypi-himbaechel-gowin/dist/*.whl
+        yowasp-nextpnr-himbaechel-gowin --help
+        yowasp-nextpnr-himbaechel-gowin --device GW1NR-LV9QN88PC6/I5 --vopt family=GW1N-9C --test
   check: # group all `test (*)` workflows into one for the required status check
     needs: [test-python]
     if: ${{ always() && !contains(needs.*.result, 'cancelled') }}

@@ -8,7 +8,7 @@ The supported FPGA families are:
   * Lattice ECP5 (via [Project Trellis][trellis]);
   * Lattice MachXO2 (via [Project Trellis][trellis]; **experimental**);
   * Lattice Nexus (via [Project Oxide][oxide]; **experimental**);
-  * Gowin GW1N (via [Project Apicula][apicula]; **experimental**).
+  * Gowin (via [Project Apicula][apicula]; **experimental**).
 
 [nextpnr]: https://github.com/YosysHQ/nextpnr/
 [webassembly]: https://webassembly.org/

@@ -134,9 +134,12 @@ cmake -B nextpnr-build -S nextpnr-src \
   -DBUILD_PYTHON=OFF \
   -DEXTERNAL_CHIPDB=ON \
   -DEXTERNAL_CHIPDB_ROOT=/share \
-  -DARCH="ice40;ecp5;machxo2;nexus;gowin" \
+  -DARCH="ice40;ecp5;machxo2;nexus;gowin;himbaechel" \
+  -DHIMBAECHEL_SPLIT=ON \
+  -DHIMBAECHEL_UARCH="gowin" \
   -DICESTORM_INSTALL_PREFIX=$(pwd)/icestorm-prefix \
   -DTRELLIS_INSTALL_PREFIX=$(pwd)/libtrellis-prefix \
   -DOXIDE_INSTALL_PREFIX=$(pwd)/prjoxide-prefix \
-  -DGOWIN_BBA_EXECUTABLE=$(pwd)/apycula-prefix/bin/gowin_bba
+  -DGOWIN_BBA_EXECUTABLE=$(pwd)/apycula-prefix/bin/gowin_bba \
+  -DAPYCULA_INSTALL_PREFIX=$(pwd)/apycula-prefix
 cmake --build nextpnr-build
