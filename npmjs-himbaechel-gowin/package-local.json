@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "transpile": [
+            "../nextpnr-build/nextpnr-himbaechel-gowin.wasm"
+        ]
+    }
+}
