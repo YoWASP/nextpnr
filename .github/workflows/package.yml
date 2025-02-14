@@ -45,7 +45,6 @@ jobs:
           ./package-pypi-ecp5.sh
           ./package-pypi-machxo2.sh
           ./package-pypi-nexus.sh
-          ./package-pypi-gowin.sh
           ./package-pypi-himbaechel-gowin.sh
       - name: Upload Python artifact
         uses: actions/upload-artifact@v4
@@ -116,11 +115,6 @@ jobs:
         yowasp-prjoxide --help
         yowasp-nextpnr-nexus --help
         yowasp-nextpnr-nexus --device LIFCL-40-9BG400CES --test
-    - name: Test Gowin Python artifact
-      run: |
-        pip install pypi-gowin/dist/*.whl
-        yowasp-nextpnr-gowin --help
-        yowasp-nextpnr-gowin --device GW1N-LV1QN48C6/I5 --test
     - name: Test Himbächel Gowin Python artifact
       run: |
         pip install pypi-himbaechel-gowin/dist/*.whl
