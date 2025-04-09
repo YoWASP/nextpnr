@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools~=67.0", "setuptools_scm~=6.2"]
+requires = ["setuptools~=78.0", "setuptools_scm~=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -33,6 +33,6 @@ yowasp-nextpnr-ice40 = "yowasp_nextpnr_ice40:_run_nextpnr_ice40_argv"
 
 [tool.setuptools.package-data]
 yowasp_nextpnr_ice40 = [
-	"*.wasm", 
+	"*.wasm",
 	"share/ice40/chipdb-*.bin"
 ]

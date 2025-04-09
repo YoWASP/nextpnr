@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools~=67.0", "setuptools_scm~=6.2"]
+requires = ["setuptools~=78.0", "setuptools_scm~=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -32,7 +32,7 @@ yowasp-nextpnr-ecp5 = "yowasp_nextpnr_ecp5:_run_nextpnr_ecp5_argv"
 "Bug Tracker" = "https://github.com/YoWASP/nextpnr/issues"
 
 [tool.setuptools.package-data]
-yowasp_nextpnr_ecp5 = [            
+yowasp_nextpnr_ecp5 = [
 	"*.wasm",
 	"share/trellis/database/devices.json",
 	"share/trellis/database/ECP5/tiledata/**/*",
