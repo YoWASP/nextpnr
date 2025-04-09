@@ -9,10 +9,7 @@ name = "yowasp-nextpnr-machxo2"
 description = "nextpnr-machxo2 FPGA place and route tool"
 readme = "README.md"
 authors = [{name = "Catherine", email = "whitequark@whitequark.org"}]
-license = {text = "ISC"}
-classifiers = [
-	"License :: OSI Approved :: ISC License (ISCL)"
-]
+license = "ISC"
 
 dependencies = [
 	"yowasp-runtime~=1.1"
