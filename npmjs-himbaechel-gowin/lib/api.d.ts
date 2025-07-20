@@ -34,3 +34,5 @@ export const commands: {
     'gowin_unpack': Command,
     'nextpnr-himbaechel-gowin': Command,
 };
+
+export const version: string;

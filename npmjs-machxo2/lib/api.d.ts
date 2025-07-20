@@ -41,3 +41,5 @@ export const commands: {
     'ecpunpack': Command,
     'nextpnr-machxo2': Command,
 };
+
+export const version: string;

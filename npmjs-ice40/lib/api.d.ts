@@ -41,3 +41,5 @@ export const commands: {
     'iceunpack': Command,
     'nextpnr-ice40': Command,
 };
+
+export const version: string;

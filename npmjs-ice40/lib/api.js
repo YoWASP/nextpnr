@@ -44,3 +44,5 @@ export const commands = {
     'iceunpack': runIceunpack,
     'nextpnr-ice40': runNextpnrIce40,
 };
+
+export const version = VERSION;

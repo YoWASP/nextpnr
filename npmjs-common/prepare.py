@@ -46,6 +46,7 @@ for transpile_file in package_local["scripts"]["transpile"]:
         .replace("__FILENAME__", transpile_file)
         .replace("__BASENAME__", os.path.basename(transpile_file)))
 package_json["scripts"]["transpile"] = " && ".join(transpile_commands)
+package_json["scripts"]["build"] += f" --define:VERSION=\\\"{version}\\\""
 if "build" in package_local["scripts"]:
     package_json["scripts"]["build"] += " " + package_local["scripts"]["build"]
 with open("package.json", "wt") as f:

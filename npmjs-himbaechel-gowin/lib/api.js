@@ -36,3 +36,5 @@ export const commands = {
     'gowin_unpack': runGowinUnpack,
     'nextpnr-himbaechel-gowin': runNextpnrHimbaechelGowin,
 };
+
+export const version = VERSION;
