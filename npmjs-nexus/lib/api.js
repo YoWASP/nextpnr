@@ -21,3 +21,5 @@ export const commands = {
     'prjoxide': runPrjoxide,
     'nextpnr-nexus': runNextpnrNexus,
 };
+
+export const version = VERSION;

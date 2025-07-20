@@ -45,3 +45,5 @@ export const commands = {
     'ecpunpack': runEcpunpack,
     'nextpnr-machxo2': runNextpnrMachxo2,
 };
+
+export const version = VERSION;

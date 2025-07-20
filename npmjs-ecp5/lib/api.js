@@ -45,3 +45,5 @@ export const commands = {
     'ecpunpack': runEcpunpack,
     'nextpnr-ecp5': runNextpnrEcp5,
 };
+
+export const version = VERSION;

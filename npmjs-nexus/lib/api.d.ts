@@ -33,3 +33,5 @@ export const commands: {
     'prjoxide': Command,
     'nextpnr-nexus': Command,
 };
+
+export const version: string;

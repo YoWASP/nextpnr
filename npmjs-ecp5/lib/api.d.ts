@@ -41,3 +41,5 @@ export const commands: {
     'ecpunpack': Command,
     'nextpnr-ecp5': Command,
 };
+
+export const version: string;
