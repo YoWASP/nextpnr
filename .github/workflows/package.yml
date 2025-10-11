@@ -165,7 +165,10 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
+        node-version: '20'
         registry-url: 'https://registry.npmjs.org'
+    - name: Update npm
+      run: npm install -g npm@latest
     - name: Download JavaScript artifacts
       uses: actions/download-artifact@v4
       with:
@@ -173,13 +176,10 @@ jobs:
         path: dist/
     - name: Publish package to NPM (dry run)
       if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/develop') }}
-      run: for pkg in $(find dist -name '*.tgz'); do npm publish --access public file:$pkg --dry-run; done
+      run: for pkg in $(find dist -name '*.tgz'); do npm publish file:$pkg ${{ github.event.ref == 'refs/heads/release' && '--tag latest' || '--tag release' }} --dry-run; done
     - name: Publish package to NPM
       if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/release') }}
-      run: for pkg in $(find dist -name '*.tgz'); do npm publish --access public file:$pkg ${{ github.event.ref == 'refs/heads/release' && '--tag latest' || '--tag release' }}; done
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        NPM_CONFIG_PROVENANCE: true
+      run: for pkg in $(find dist -name '*.tgz'); do npm publish file:$pkg ${{ github.event.ref == 'refs/heads/release' && '--tag latest' || '--tag release' }}; done
   release:
     needs: check
     runs-on: ubuntu-latest
