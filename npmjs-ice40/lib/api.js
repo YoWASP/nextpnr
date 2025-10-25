@@ -1,4 +1,5 @@
 import { Application } from '@yowasp/runtime';
+import * as resources from '../gen/nextpnr-ice40-resources.js';
 import { instantiate as instantiateIcepll } from '../gen/icepll.js';
 import { instantiate as instantiateIcebram } from '../gen/icebram.js';
 import { instantiate as instantiateIcemulti } from '../gen/icemulti.js';
@@ -6,8 +7,6 @@ import { instantiate as instantiateIcepack } from '../gen/icepack.js';
 import { instantiate as instantiateNextpnrIce40 } from '../gen/nextpnr-ice40.js';
 
 export { Exit } from '@yowasp/runtime';
-
-const resources = () => import('./resources-nextpnr-ice40.js');
 
 const icepll = new Application(resources, instantiateIcepll, 'yowasp-icepll');
 const runIcepll = icepll.run.bind(icepll);

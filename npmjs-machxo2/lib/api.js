@@ -1,4 +1,5 @@
 import { Application } from '@yowasp/runtime';
+import * as resources from '../gen/nextpnr-machxo2-resources.js';
 import { instantiate as instantiateEcppll } from '../gen/ecppll.js';
 import { instantiate as instantiateEcpbram } from '../gen/ecpbram.js';
 import { instantiate as instantiateEcpmulti } from '../gen/ecpmulti.js';
@@ -7,8 +8,6 @@ import { instantiate as instantiateEcpunpack } from '../gen/ecpunpack.js';
 import { instantiate as instantiateNextpnrMachxo2 } from '../gen/nextpnr-machxo2.js';
 
 export { Exit } from '@yowasp/runtime';
-
-const resources = () => import('./resources-nextpnr-machxo2.js');
 
 const ecppll = new Application(resources, instantiateEcppll, 'yowasp-ecppll');
 const runEcppll = ecppll.run.bind(ecppll);
