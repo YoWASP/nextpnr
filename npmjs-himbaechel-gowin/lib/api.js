@@ -1,10 +1,9 @@
 import { Application } from '@yowasp/runtime';
 import { PythonApplication } from './pyodide.js';
+import * as resources from '../gen/nextpnr-himbaechel-gowin-resources.js';
 import { instantiate as instantiateNextpnrHimbaechelGowin } from '../gen/nextpnr-himbaechel-gowin.js';
 
 export { Exit } from '@yowasp/runtime';
-
-const resources = () => import('./resources-nextpnr-himbaechel-gowin.js');
 
 const executeApycula = (pyodide, argv0) => pyodide.runPython(`
 import sys; sys.path.append('/share/python')
