@@ -4,15 +4,10 @@ cd $(dirname $0)
 
 PYTHON=${PYTHON:-python}
 
-PYTHON_LIBNAME=$(basename $(readlink -f apycula-prefix/bin/python))
+export APYCULA_WHEEL="$(cat apycula-meta/requirements.txt)"
 rm -rf npmjs-himbaechel-gowin/share/python
-mkdir -p npmjs-himbaechel-gowin/share/python/apycula
-cp -r apycula-prefix/lib/${PYTHON_LIBNAME}/site-packages/apycula/*.py \
-   npmjs-himbaechel-gowin/share/python/apycula
-cp -r apycula-prefix/lib/${PYTHON_LIBNAME}/site-packages/apycula/*.pickle \
-   npmjs-himbaechel-gowin/share/python/apycula
-cp -r apycula-prefix/lib/${PYTHON_LIBNAME}/site-packages/crc/_crc.py \
-   npmjs-himbaechel-gowin/share/python/crc.py
+mkdir -p npmjs-himbaechel-gowin/share/python
+(cd npmjs-himbaechel-gowin/share/python && pip download --no-deps $APYCULA_WHEEL)
 
 cd npmjs-himbaechel-gowin
 ${PYTHON} prepare.py himbaechel-gowin

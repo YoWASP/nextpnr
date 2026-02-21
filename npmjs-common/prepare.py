@@ -47,6 +47,10 @@ for transpile_file in package_local["scripts"]["transpile"]:
         .replace("__BASENAME__", os.path.basename(transpile_file)))
 package_json["scripts"]["transpile"] = " && ".join(transpile_commands)
 package_json["scripts"]["build"] += f" --define:VERSION=\\\"{version}\\\""
+if "APYCULA_WHEEL" in os.environ:
+    _, apycula_version = os.environ["APYCULA_WHEEL"].split("==")
+    apycula_wheel = f"emfs:/share/python/apycula-{apycula_version}-py3-none-any.whl"
+    package_json["scripts"]["build"] += f" --define:APYCULA_WHEEL=\\\"{apycula_wheel}\\\""
 if "build" in package_local["scripts"]:
     package_json["scripts"]["build"] += " " + package_local["scripts"]["build"]
 with open("package.json", "wt") as f:

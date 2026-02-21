@@ -5,10 +5,11 @@ import { instantiate as instantiateNextpnrHimbaechelGowin } from '../gen/nextpnr
 
 export { Exit } from '@yowasp/runtime';
 
-const executeApycula = (pyodide, argv0) => pyodide.runPython(`
-import sys; sys.path.append('/share/python')
-from apycula.${argv0} import main; main()
-`);
+const executeApycula = async (pyodide, argv0) => {
+    await pyodide.loadPackage("micropip");
+    await pyodide.runPythonAsync(`import micropip; await micropip.install("${APYCULA_WHEEL}", keep_going=True)`);
+    pyodide.runPython(`from apycula.${argv0} import main; main()`);
+};
 
 const gowinPll = new PythonApplication(resources, executeApycula, 'gowin_pll');
 const runGowinPll = gowinPll.run.bind(gowinPll);

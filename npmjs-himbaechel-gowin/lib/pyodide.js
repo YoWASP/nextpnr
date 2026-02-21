@@ -88,23 +88,62 @@ function fetchResources({ filesystem }) {
 }
 
 export class PythonApplication {
-    constructor(resources, execute, argv0) {
-        this.resources = resources;
-        this.resourceData = null;
-        this.execute = execute;
-        this.argv0 = argv0;
+    #resourceModule;
+    #resourceData;
+    #execute;
+    #argv0;
+
+    constructor(resourceModule, execute, argv0) {
+        this.#resourceModule = resourceModule;
+        this.#resourceData = null;
+        this.#execute = execute;
+        this.#argv0 = argv0;
+    }
+
+    get argv0() {
+        return this.#argv0;
+    }
+
+    async #fetchResources(fetchProgress) {
+        const resourceModule = await this.#resourceModule;
+        let fetchFn = fetch;
+        if (fetchProgress !== undefined) {
+            const status = { source: this, totalLength: resourceModule.totalSize, doneLength: 0 };
+            fetchProgress(status);
+            fetchFn = (input, init) => fetch(input, init).then((response) => {
+                return new Response(response.body.pipeThrough(new TransformStream({
+                    transform(chunk, controller) {
+                        controller.enqueue(chunk);
+                        status.doneLength += chunk.length;
+                        fetchProgress(status);
+                    }
+                })), response);
+            });
+        }
+        const [modules, filesystem] = await Promise.all([
+            resourceModule.modules(fetchFn),
+            resourceModule.filesystem(fetchFn),
+        ]);
+        this.#resourceData = { modules, filesystem };
     }
 
     async run(args = null, files = {}, options = {}) {
         if (options.synchronously)
             throw new Error("Cannot run a Python application synchronously");
 
-        if (this.resourceData === null) {
-            this.resourceData = await this.resources().then(fetchResources);
+        if (this.#resourceData === null) {
+            /** @type {ProgressCallback} */
+            const defaultFetchProgress = ({ source, totalLength, doneLength }) => {
+                const percent = (100 * doneLength / totalLength).toFixed(0);
+                console.log(`${source.argv0}: fetched ${percent}% (${doneLength} / ${totalLength})`);
+            };
+            return this.#fetchResources(options.fetchProgress ?? defaultFetchProgress).then(() => {
+                return this.run(args, files, options);
+            });
         }
 
         const loadPyodide = options.loadPyodide ?? (await import('pyodide')).loadPyodide;
-        const pyodide = await loadPyodide({ args: [this.argv0, ...args ?? []] });
+        const pyodide = await loadPyodide({ args: [this.#argv0, ...args ?? []] });
 
         if (args === null)
             return; // prefetch resources, but do not actually run
@@ -116,13 +155,13 @@ export class PythonApplication {
         pyodide.setStdout(makeWriter(options.stdout === undefined ? lineBufferedConsole : options.stdout));
         pyodide.setStderr(makeWriter(options.stderr === undefined ? lineBufferedConsole : options.stderr));
 
-        writeTree(pyodide.FS, this.resourceData.filesystem);
+        writeTree(pyodide.FS, this.#resourceData.filesystem);
         writeTree(pyodide.FS, {root: files});
         pyodide.FS.chdir('/root');
 
         let error;
         try {
-            this.execute(pyodide, this.argv0);
+            await this.#execute(pyodide, this.#argv0);
         } catch (e) {
             if (e instanceof pyodide.ffi.PythonError) {
                 error = e;
@@ -136,6 +175,7 @@ export class PythonApplication {
             if (error.type === 'SystemExit') {
                 exitCode = pyodide.pyimport('sys').last_value.code;
             } else {
+                console.error(error);
                 exitCode = 2;
             }
         }
